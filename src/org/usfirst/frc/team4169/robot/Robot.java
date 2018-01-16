@@ -10,14 +10,19 @@
 //
 package org.usfirst.frc.team4169.robot;
 
+import org.usfirst.frc.team4169.robot.commands.ExampleCommand;
+import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4169.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team4169.robot.subsystems.Lift;
+import org.usfirst.frc.team4169.robot.subsystems.Frame;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4169.robot.commands.ExampleCommand;
-import org.usfirst.frc.team4169.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,8 +34,11 @@ import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
 	public static final ExampleSubsystem kExampleSubsystem = new ExampleSubsystem();
 	public static final DriveTrain kDriveTrain = new DriveTrain();
+	public static final Frame kFrame = new Frame();
+	public static final Lift kLift = new Lift();
 	public static OI m_oi;
-
+	
+	Command lift;
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 

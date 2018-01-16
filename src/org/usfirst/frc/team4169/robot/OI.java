@@ -7,13 +7,19 @@
 
 package org.usfirst.frc.team4169.robot;
 
+import org.usfirst.frc.team4169.robot.commands.MoveFrame;
+
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.
@@ -23,7 +29,13 @@ public class OI {
 	// Button button = new JoystickButton(stick, buttonNumber);
 	
 	public static XboxController controller = new XboxController(1);
-
+	private static JoystickButton AButton = new JoystickButton(controller, 2);
+	private static JoystickButton BButton = new JoystickButton(controller, 2);
+	
+	public void OI(){
+		AButton.whenActive(new MoveFrame());
+		BButton.whenActive(new MoveFrame());
+	}
 	// There are a few additional built in buttons you can use. Additionally,
 	// by subclassing Button you can create custom triggers and bind those to
 	// commands the same as any other Button.
