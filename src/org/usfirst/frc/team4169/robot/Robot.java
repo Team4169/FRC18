@@ -13,13 +13,12 @@ package org.usfirst.frc.team4169.robot;
 import org.usfirst.frc.team4169.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team4169.robot.subsystems.Lift;
 import org.usfirst.frc.team4169.robot.subsystems.Frame;
+import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

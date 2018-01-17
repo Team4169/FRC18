@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class moveLift extends Command {
+public class MoveLift extends Command {
 
-    public moveLift() {
+    public MoveLift() {
         requires(Robot.kLift);
     }
 
@@ -21,10 +21,10 @@ public class moveLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(OI.controller.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.15){
+    	if(OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.15){
     		Robot.kLift.moveLift(-1);
     	}
-    	else if(OI.controller.getTriggerAxis(GenericHID.Hand.kRight) >= 0.15){
+    	else if(OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kRight) >= 0.15){
     		Robot.kLift.moveLift(1);
     	}
     	else{

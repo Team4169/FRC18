@@ -38,8 +38,8 @@ public class DriveTrain extends Subsystem {
     
     //drives the robot using controller values
     public void drive() {
-    		double leftY = OI.controller.getY(GenericHID.Hand.kLeft);
-    		double rightY = OI.controller.getY(GenericHID.Hand.kRight);
+    		double leftY = OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
+    		double rightY = OI.getInstance().controller.getY(GenericHID.Hand.kRight);
     		
     		if (Math.abs(leftY) < 0.2) {
     			leftY = 0;
@@ -49,7 +49,7 @@ public class DriveTrain extends Subsystem {
     			rightY = 0;
     		}
     		
-    		if (OI.controller.getBumper(GenericHID.Hand.kRight)) {
+    		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
     			leftY = leftY / 4;
     			rightY = rightY / 4;
     		}
