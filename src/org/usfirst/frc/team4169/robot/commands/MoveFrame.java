@@ -20,10 +20,10 @@ public class MoveFrame extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(OI.controller.getAButton() == true){
+    	if(OI.getInstance().controller.getAButton() == true){
     		Robot.kFrame.moveFrame(1);
     	}
-    	else if(OI.controller.getBButton() == true){
+    	else if(OI.getInstance().controller.getBButton() == true){
     		Robot.kFrame.moveFrame(-1);
     	}
     	else{
