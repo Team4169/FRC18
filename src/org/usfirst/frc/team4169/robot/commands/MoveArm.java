@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class MoveFrame extends Command {
+public class MoveArm extends Command {
 
-    public MoveFrame() {
-        requires(Robot.kFrame);
+    public MoveArm() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    		requires(Robot.kArm);
     }
 
     // Called just before this Command runs the first time
@@ -20,12 +22,12 @@ public class MoveFrame extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		if (OI.getInstance().controller.getAButton() == true) {
-    			Robot.kFrame.moveFrame(1);
-    		} else if (OI.getInstance().controller.getBButton() == true) {
-    			Robot.kFrame.moveFrame(-1);
+    		if(OI.getInstance().controller.getAButton()) {
+    			Robot.kArm.moveGrabber(1);
+    		} else if(OI.getInstance().controller.getBButton()) {
+    			Robot.kArm.moveGrabber(-1);
     		} else {
-    			Robot.kFrame.moveFrame(0);
+    			Robot.kArm.moveGrabber(0);
     		}
     }
 
@@ -36,7 +38,7 @@ public class MoveFrame extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    		Robot.kFrame.moveFrame(0);
+    		Robot.kArm.moveGrabber(0);
     }
 
     // Called when another command which requires one or more of the same

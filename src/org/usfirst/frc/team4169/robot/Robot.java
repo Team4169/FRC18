@@ -10,10 +10,9 @@
 //
 package org.usfirst.frc.team4169.robot;
 
-import org.usfirst.frc.team4169.robot.commands.ExampleCommand;
+
+import org.usfirst.frc.team4169.robot.subsystems.Arm;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team4169.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team4169.robot.subsystems.Frame;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -32,9 +31,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static final ExampleSubsystem kExampleSubsystem = new ExampleSubsystem();
 	public static final DriveTrain kDriveTrain = new DriveTrain();
-	public static final Frame kFrame = new Frame();
+	public static final Arm kArm = new Arm();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
 	public static final Encoder encoderLeft = new Encoder(RobotMap.leftEncoderPortA, RobotMap.leftEncoderPortB, false, Encoder.EncodingType.k4X);
@@ -54,7 +52,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 		
