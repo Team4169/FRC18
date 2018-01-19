@@ -16,6 +16,7 @@ import org.usfirst.frc.team4169.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4169.robot.subsystems.Frame;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,8 +37,13 @@ public class Robot extends TimedRobot {
 	public static final Frame kFrame = new Frame();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
+	public static final Encoder encoderLeft = new Encoder(RobotMap.leftEncoderPortA, RobotMap.leftEncoderPortB, false, Encoder.EncodingType.k4X);
+	public static final Encoder encoderRight = new Encoder(RobotMap.rightEncoderPortA, RobotMap.rightEncoderPortB, true, Encoder.EncodingType.k4X);
 	
-	Command lift;
+	int countL, countR;
+	double distanceL, rateL, distanceR, rateR;
+	boolean directionL, stoppedL, directionR, stoppedR;
+	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -51,6 +57,19 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		
+		encoderLeft.setMaxPeriod(0.5);
+		encoderLeft.setMinRate(0.25);
+		encoderLeft.setDistancePerPulse(Math.PI/240);
+		encoderLeft.setSamplesToAverage(8);
+		
+		encoderRight.setMaxPeriod(0.5);
+		encoderRight.setMinRate(0.25);
+		encoderRight.setDistancePerPulse(Math.PI/240);
+		encoderRight.setSamplesToAverage(8);
+		
+		encoderLeft.reset();
+		encoderRight.reset();
 	}
 
 	/**
@@ -102,6 +121,20 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		
+		countL = encoderLeft.get();
+		distanceL = encoderLeft.getDistance();
+		rateL = encoderLeft.getRate();
+		directionL = encoderLeft.getDirection();
+		stoppedL = encoderLeft.getStopped();
+		
+		countR = encoderRight.get();
+		distanceR = encoderRight.getDistance();
+		rateR = encoderRight.getRate();
+		directionR = encoderRight.getDirection();
+		stoppedR = encoderRight.getStopped();
+		
+		
 	}
 
 	@Override

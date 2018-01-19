@@ -8,9 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- *
- */
 public class Lift extends Subsystem {
 	static WPI_TalonSRX liftMotor = new WPI_TalonSRX(RobotMap.liftMotor);
     // Put methods for controlling this subsystem
@@ -20,16 +17,14 @@ public class Lift extends Subsystem {
         setDefaultCommand(new MoveLift());
     }
     
-    public void moveLift(int speed){
-    	if(speed == 1){
-    		liftMotor.set(0.5);
-    	}
-    	else if(speed == -1){
-    		liftMotor.set(-0.5);
-    	}
-    	else{
-    		liftMotor.set(0);
-    	}
+    public void moveLift(int speed) {
+    		if (speed == 1) {
+    			liftMotor.set(0.5);
+    		} else if (speed == -1) {
+    			liftMotor.set(-0.5);
+    		} else {
+    			liftMotor.set(0);
+    		}
     }
 }
 

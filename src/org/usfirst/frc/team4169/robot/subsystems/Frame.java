@@ -17,17 +17,14 @@ public class Frame extends Subsystem {
     public void initDefaultCommand() {
     }
     
-    public void moveFrame(int speed){
-    	
-    	if(speed == 1){
-    		extensionMotor.set(0.5);
-    	}
-    	else if(speed == -1){
-    		extensionMotor.set(-0.5);
-    	}
-    	else{
-    		extensionMotor.set(0);
-    	}
+    public void moveFrame(int speed) {
+    		if (speed == 1) {
+    			extensionMotor.set(0.5);
+    		} else if (speed == -1) {
+    			extensionMotor.set(-0.5);
+    		} else {
+    			extensionMotor.set(0);
+    		}
     }
 }
 
