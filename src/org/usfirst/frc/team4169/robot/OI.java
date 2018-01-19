@@ -7,7 +7,7 @@
 
 package org.usfirst.frc.team4169.robot;
 
-import org.usfirst.frc.team4169.robot.commands.MoveFrame;
+
 
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -32,8 +32,7 @@ public class OI {
 	private JoystickButton BButton = new JoystickButton(controller, 2);
 	
 	private void OI(){
-		AButton.whenActive(new MoveFrame());
-		BButton.whenActive(new MoveFrame());
+		
 	}
 	
 	public static OI getInstance() {

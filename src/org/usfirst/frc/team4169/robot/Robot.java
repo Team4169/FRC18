@@ -13,7 +13,6 @@ package org.usfirst.frc.team4169.robot;
 import org.usfirst.frc.team4169.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team4169.robot.subsystems.Frame;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -34,7 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 	public static final ExampleSubsystem kExampleSubsystem = new ExampleSubsystem();
 	public static final DriveTrain kDriveTrain = new DriveTrain();
-	public static final Frame kFrame = new Frame();
+
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
 	public static final Encoder encoderLeft = new Encoder(RobotMap.leftEncoderPortA, RobotMap.leftEncoderPortB, false, Encoder.EncodingType.k4X);
