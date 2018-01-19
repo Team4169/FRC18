@@ -21,13 +21,20 @@ public class MoveLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		if (OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.15) {
-    			Robot.kLift.moveLift(-1);
-    		} else if (OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kRight) >= 0.15) {
-    			Robot.kLift.moveLift(1);
-    		} else {
-    			Robot.kLift.moveLift(0);
-    		}
+    	double speed, left, right;
+    	
+    	left = OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kLeft);
+    	right = OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kRight);
+    	
+    	left = (left - 0.15) / 4;
+    	right = (right - 0.15) / 4;
+    	
+    	if (left < 0) left = 0;
+    	if (right < 0) right = 0;
+    	
+    	speed = right - left;
+    	
+    	Robot.kLift.moveLift(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,12 +44,12 @@ public class MoveLift extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    		Robot.kLift.moveLift(0);
+    	Robot.kLift.moveLift(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    		end();
+    	end();
     }
 }
