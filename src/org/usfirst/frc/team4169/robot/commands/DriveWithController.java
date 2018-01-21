@@ -1,11 +1,10 @@
 package org.usfirst.frc.team4169.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4169.robot.Robot;
 
-/**
- *
- */
+import edu.wpi.first.wpilibj.command.Command;
+
+
 public class DriveWithController extends Command {
 
     public DriveWithController() {

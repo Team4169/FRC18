@@ -10,7 +10,6 @@
 //
 package org.usfirst.frc.team4169.robot;
 
-
 import org.usfirst.frc.team4169.robot.subsystems.Arm;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
@@ -31,10 +30,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+	
+	public static OI m_oi;
+	
 	public static final DriveTrain kDriveTrain = new DriveTrain();
 	public static final Arm kArm = new Arm();
 	public static final Lift kLift = new Lift();
-	public static OI m_oi;
+	
 	public static final Encoder encoderLeft = new Encoder(RobotMap.leftEncoderPortA, RobotMap.leftEncoderPortB, false, Encoder.EncodingType.k4X);
 	public static final Encoder encoderRight = new Encoder(RobotMap.rightEncoderPortA, RobotMap.rightEncoderPortB, true, Encoder.EncodingType.k4X);
 	
@@ -53,7 +55,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		m_oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		SmartDashboard.putData("Auto mode", m_chooser);		
 		
 		encoderLeft.setMaxPeriod(0.5);
 		encoderLeft.setMinRate(0.25);
@@ -129,9 +131,7 @@ public class Robot extends TimedRobot {
 		distanceR = encoderRight.getDistance();
 		rateR = encoderRight.getRate();
 		directionR = encoderRight.getDirection();
-		stoppedR = encoderRight.getStopped();
-		
-		
+		stoppedR = encoderRight.getStopped();	
 	}
 
 	@Override

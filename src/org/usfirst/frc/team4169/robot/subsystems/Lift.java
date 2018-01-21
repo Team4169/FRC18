@@ -18,13 +18,13 @@ public class Lift extends Subsystem {
     }
     
     public void moveLift(int speed) {
-    		if (speed == 1) {
-    			liftMotor.set(0.5);
-    		} else if (speed == -1) {
-    			liftMotor.set(-0.5);
-    		} else {
-    			liftMotor.set(0);
-    		}
+    	if (speed == 1) {
+    		liftMotor.set(0.5);
+    	} else if (speed == -1) {
+    		liftMotor.set(-0.5);
+    	} else {
+    		liftMotor.set(0);
+    	}
     }
 }
 

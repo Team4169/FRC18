@@ -7,9 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
-/**
- *
- */
+
 public class Arm extends Subsystem {
 
 	static WPI_TalonSRX leftGrabberMotor = new WPI_TalonSRX(RobotMap.leftGrabberMotor);
@@ -22,17 +20,16 @@ public class Arm extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     public void moveGrabber(int speed) {
-    		if (speed == 1) {
-    			leftGrabberMotor.set(0.5);
-    			rightGrabberMotor.set(0.5);
-    		} else if(speed == -1) {
-    			leftGrabberMotor.set(-0.5);
-    			rightGrabberMotor.set(-0.5);
-  
-    		} else {
-    			leftGrabberMotor.set(0);
-    			rightGrabberMotor.set(0);
-    		}
+    	if (speed == 1) {
+    		leftGrabberMotor.set(0.5);
+    		rightGrabberMotor.set(0.5);
+    	} else if(speed == -1) {
+    		leftGrabberMotor.set(-0.5);
+    		rightGrabberMotor.set(-0.5);
+    	} else {
+    		leftGrabberMotor.set(0);
+    		rightGrabberMotor.set(0);
+    	}
     	
     }
 }

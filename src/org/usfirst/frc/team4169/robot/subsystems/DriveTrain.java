@@ -12,9 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc.team4169.robot.OI;
 import org.usfirst.frc.team4169.robot.RobotMap;
 
-/**
- *
- */
+
 
 public class DriveTrain extends Subsystem {
 	
@@ -34,29 +32,29 @@ public class DriveTrain extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    		setDefaultCommand(new DriveWithController());
+    	setDefaultCommand(new DriveWithController());
     }
     
     //drives the robot using controller values
     public void drive() {
-    		double leftY = OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
-    		double rightY = OI.getInstance().controller.getY(GenericHID.Hand.kRight);
+    	double leftY = OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
+    	double rightY = OI.getInstance().controller.getY(GenericHID.Hand.kRight);
     		
-    		if (Math.abs(leftY) < 0.2) {
-    			leftY = 0;
-    		}
+    	if (Math.abs(leftY) < 0.2) {
+    		leftY = 0;
+    	}
     		
-    		if (Math.abs(rightY) < 0.2) {
-    			rightY = 0;
-    		}
+    	if (Math.abs(rightY) < 0.2) {
+    		rightY = 0;
+    	}
     		
-    		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
-    			leftY = leftY / 4;
-    			rightY = rightY / 4;
-    		}
+    	if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
+    		leftY = leftY / 4;
+    		rightY = rightY / 4;
+    	}
     		
-    		drive.tankDrive(leftY, rightY);
-    }
+    	drive.tankDrive(leftY, rightY);
+   }
     
     //stops the robot
     public void stop() {

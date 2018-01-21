@@ -29,10 +29,11 @@ public class OI {
 	// Button button = new JoystickButton(stick, buttonNumber);
 	
 	public XboxController controller = new XboxController(1);
+	
 	private JoystickButton AButton = new JoystickButton(controller, 2);
 	private JoystickButton BButton = new JoystickButton(controller, 2);
 	
-	public OI(){
+	public OI() {
 		AButton.whenPressed(new MoveArm());
 		BButton.whenPressed(new MoveArm());
 	}
@@ -40,8 +41,7 @@ public class OI {
 	public static OI getInstance() {
 		if (instance == null) {
 			instance = new OI();
-		}
-		
+		}	
 		return instance;
 	}
 	
