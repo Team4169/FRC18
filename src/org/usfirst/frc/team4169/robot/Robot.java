@@ -15,6 +15,7 @@ import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -30,6 +31,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+	Preferences prefs;
+	public double p;
+	public static double armSpeed;
+	public static double liftSpeed;
+	
 	
 	public static OI m_oi;
 	
@@ -76,6 +82,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(kArm);
 		SmartDashboard.putData(kLift);
 		
+		prefs = Preferences.getInstance();
+		p = prefs.getDouble("p", 0.1);
+		armSpeed = prefs.getDouble("armSpeed", 0.1);
+		liftSpeed = prefs.getDouble("liftSpeed", 0.1);
 	}
 
 	/**
@@ -170,4 +180,5 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
+	
 }

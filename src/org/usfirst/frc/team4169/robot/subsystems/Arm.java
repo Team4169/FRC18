@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4169.robot.subsystems;
 
+import org.usfirst.frc.team4169.robot.Robot;
 import org.usfirst.frc.team4169.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -21,11 +22,11 @@ public class Arm extends Subsystem {
     }
     public void moveGrabber(int speed) {
     	if (speed == 1) {
-    		leftGrabberMotor.set(0.5);
-    		rightGrabberMotor.set(0.5);
+    		leftGrabberMotor.set(Robot.armSpeed);
+    		rightGrabberMotor.set(Robot.armSpeed);
     	} else if(speed == -1) {
-    		leftGrabberMotor.set(-0.5);
-    		rightGrabberMotor.set(-0.5);
+    		leftGrabberMotor.set(-Robot.armSpeed);
+    		rightGrabberMotor.set(-Robot.armSpeed);
     	} else {
     		leftGrabberMotor.set(0);
     		rightGrabberMotor.set(0);

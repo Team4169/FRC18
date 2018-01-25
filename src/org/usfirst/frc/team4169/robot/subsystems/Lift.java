@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4169.robot.subsystems;
 
+import org.usfirst.frc.team4169.robot.Robot;
 import org.usfirst.frc.team4169.robot.RobotMap;
 import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
@@ -27,9 +28,9 @@ public class Lift extends Subsystem {
     
     public void moveLift(int speed) {
     	if (speed == 1) {
-    		liftMotor.set(0.5);
+    		liftMotor.set(Robot.liftSpeed);
     	} else if (speed == -1) {
-    		liftMotor.set(-0.5);
+    		liftMotor.set(-Robot.liftSpeed);
     	} else {
     		liftMotor.set(0);
     	}
