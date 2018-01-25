@@ -10,6 +10,7 @@ package org.usfirst.frc.team4169.robot;
 
 
 import org.usfirst.frc.team4169.robot.commands.MoveArm;
+import org.usfirst.frc.team4169.robot.commands.MoveClimber;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -30,12 +31,19 @@ public class OI {
 	
 	public XboxController controller = new XboxController(1);
 	
-	private JoystickButton AButton = new JoystickButton(controller, 2);
+	private JoystickButton AButton = new JoystickButton(controller, 1);
 	private JoystickButton BButton = new JoystickButton(controller, 2);
+	private JoystickButton XButton = new JoystickButton(controller, 3);
+	private JoystickButton YButton = new JoystickButton(controller, 4);
+
 	
 	public OI() {
 		AButton.whenPressed(new MoveArm());
 		BButton.whenPressed(new MoveArm());
+		XButton.whenPressed(new MoveClimber());
+		YButton.whenPressed(new MoveClimber());
+
+		
 	}
 	
 	public static OI getInstance() {

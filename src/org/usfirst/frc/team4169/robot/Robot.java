@@ -11,6 +11,7 @@
 package org.usfirst.frc.team4169.robot;
 
 import org.usfirst.frc.team4169.robot.subsystems.Arm;
+import org.usfirst.frc.team4169.robot.subsystems.Climber;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
 	public double p;
 	public static double armSpeed;
 	public static double liftSpeed;
+	public static double climberSpeed;
 	
 	
 	public static OI m_oi;
@@ -42,6 +44,7 @@ public class Robot extends TimedRobot {
 	public static final DriveTrain kDriveTrain = new DriveTrain();
 	public static final Arm kArm = new Arm();
 	public static final Lift kLift = new Lift();
+	public static final Climber kClimber = new Climber();
 	
 	public static final Encoder encoderLeft = new Encoder(RobotMap.leftEncoderPortA, RobotMap.leftEncoderPortB, false, Encoder.EncodingType.k4X);
 	public static final Encoder encoderRight = new Encoder(RobotMap.rightEncoderPortA, RobotMap.rightEncoderPortB, true, Encoder.EncodingType.k4X);
@@ -84,8 +87,9 @@ public class Robot extends TimedRobot {
 		
 		prefs = Preferences.getInstance();
 		p = prefs.getDouble("p", 0.1);
-		armSpeed = prefs.getDouble("armSpeed", 0.1);
-		liftSpeed = prefs.getDouble("liftSpeed", 0.1);
+		armSpeed = prefs.getDouble("armSpeed", 0.5);
+		liftSpeed = prefs.getDouble("liftSpeed", 0.5);
+		climberSpeed = prefs.getDouble("climberSpeed",  0.5);
 	}
 
 	/**

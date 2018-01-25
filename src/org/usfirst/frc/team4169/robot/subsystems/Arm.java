@@ -2,6 +2,7 @@ package org.usfirst.frc.team4169.robot.subsystems;
 
 import org.usfirst.frc.team4169.robot.Robot;
 import org.usfirst.frc.team4169.robot.RobotMap;
+import org.usfirst.frc.team4169.robot.commands.MoveArm;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -19,6 +20,7 @@ public class Arm extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	setDefaultCommand(new MoveArm());
     }
     public void moveGrabber(int speed) {
     	if (speed == 1) {
