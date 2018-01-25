@@ -28,13 +28,18 @@ public class RobotMap {
 	public static final int leftBackMotor = 1;
 	public static final int rightFrontMotor = 2;
 	public static final int rightBackMotor = 3;
-	public static final int extensionMotor = 4;
+	
 	public static final int liftMotor = 5;
+	
 	public static final int leftEncoderPortA = 6;
 	public static final int leftEncoderPortB = 7;
 	public static final int rightEncoderPortA = 8;
 	public static final int rightEncoderPortB = 9;
+	public static final int encoderLift = 11;
+	
 	public static final int leftGrabberMotor = 10;
 	public static final int rightGrabberMotor = 10;
+	
+	
 	
 }

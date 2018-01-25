@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
 	
 	public static final Encoder encoderLeft = new Encoder(RobotMap.leftEncoderPortA, RobotMap.leftEncoderPortB, false, Encoder.EncodingType.k4X);
 	public static final Encoder encoderRight = new Encoder(RobotMap.rightEncoderPortA, RobotMap.rightEncoderPortB, true, Encoder.EncodingType.k4X);
+	public static final Encoder encoderLift = new Encoder(RobotMap.rightEncoderPortA, RobotMap.rightEncoderPortB, true, Encoder.EncodingType.k4X);
 	
 	int countL, countR;
 	double distanceL, rateL, distanceR, rateR;
@@ -69,6 +70,12 @@ public class Robot extends TimedRobot {
 		
 		encoderLeft.reset();
 		encoderRight.reset();
+		encoderLift.reset();
+		
+		SmartDashboard.putData(kDriveTrain);
+		SmartDashboard.putData(kArm);
+		SmartDashboard.putData(kLift);
+		
 	}
 
 	/**
@@ -119,6 +126,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		SmartDashboard.putData(encoderLeft);
+		SmartDashboard.putData(encoderRight);
+		SmartDashboard.putData(encoderLift);
+		
 		Scheduler.getInstance().run();
 		
 		countL = encoderLeft.get();

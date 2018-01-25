@@ -17,6 +17,14 @@ public class Lift extends Subsystem {
         setDefaultCommand(new MoveLift());
     }
     
+    public boolean isAtTop() {
+    		return false;
+    }
+    
+    public boolean isAtBottom() {
+		return false;
+    }
+    
     public void moveLift(int speed) {
     	if (speed == 1) {
     		liftMotor.set(0.5);

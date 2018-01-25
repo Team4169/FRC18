@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team4169.robot.commands.DriveWithController;
 
@@ -25,6 +26,8 @@ public class DriveTrain extends Subsystem {
 	static SpeedControllerGroup right = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
 	
 	static DifferentialDrive drive = new DifferentialDrive(left, right);
+	
+	double kP;
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -59,6 +62,12 @@ public class DriveTrain extends Subsystem {
     //stops the robot
     public void stop() {
     	drive.tankDrive(0, 0);
+    }
+    
+    public void driveStraight(double speed) {
+    		kP = SmartDashboard.getNumber("kP", 0.5);
+    		
+    		
     }
 }
 
