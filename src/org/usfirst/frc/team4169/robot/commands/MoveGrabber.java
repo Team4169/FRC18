@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class MoveFrame extends Command {
+public class MoveGrabber extends Command {
 
-    public MoveFrame() {
-        requires(Robot.kFrame);
+    public MoveGrabber() {
+        requires(Robot.kGrabber);
     }
 
     // Called just before this Command runs the first time
@@ -21,11 +21,11 @@ public class MoveFrame extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     		if (OI.getInstance().controller.getAButton() == true) {
-    			Robot.kFrame.moveFrame(1);
+    			Robot.kGrabber.moveGrabber(1);
     		} else if (OI.getInstance().controller.getBButton() == true) {
-    			Robot.kFrame.moveFrame(-1);
+    			Robot.kGrabber.moveGrabber(-1);
     		} else {
-    			Robot.kFrame.moveFrame(0);
+    			Robot.kGrabber.moveGrabber(0);
     		}
     }
 
@@ -36,7 +36,7 @@ public class MoveFrame extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    		Robot.kFrame.moveFrame(0);
+    		Robot.kGrabber.moveGrabber(0);
     }
 
     // Called when another command which requires one or more of the same

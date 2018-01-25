@@ -7,8 +7,8 @@
 
 package org.usfirst.frc.team4169.robot;
 
-import org.usfirst.frc.team4169.robot.commands.MoveFrame;
-
+import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
+import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -29,11 +29,15 @@ public class OI {
 	
 	public XboxController controller = new XboxController(1);
 	private JoystickButton AButton = new JoystickButton(controller, 2);
-	private JoystickButton BButton = new JoystickButton(controller, 2);
+	private JoystickButton BButton = new JoystickButton(controller, 3);
+	private JoystickButton XButton = new JoystickButton(controller, 4);
+	private JoystickButton YButton = new JoystickButton(controller, 5);
 	
 	private void OI(){
-		AButton.whenActive(new MoveFrame());
-		BButton.whenActive(new MoveFrame());
+		AButton.whenActive(new MoveLift());
+		BButton.whenActive(new MoveLift());
+		XButton.whenActive(new MoveGrabber());
+		YButton.whenActive(new MoveGrabber());
 	}
 	
 	public static OI getInstance() {
