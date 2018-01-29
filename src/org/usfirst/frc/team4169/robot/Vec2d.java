@@ -123,6 +123,15 @@ public class Vec2d {
     	 y *= m;
     	 return makeCart(x, y);
      }
+     
+     public boolean isNear(Vec2d v, double epsilon) {
+    	 double distance = Math.sqrt(Math.pow(Math.abs(v.x-this.x), 2)+Math.pow(Math.abs(v.y-this.y), 2));
+    	 return distance <= epsilon;
+     }
+     public boolean isNear(Vec2d v) {
+    	 double distance = Math.sqrt(Math.pow(Math.abs(v.x-this.x), 2)+Math.pow(Math.abs(v.y-this.y), 2));
+    	 return distance <= 5;
+     }
 
     @Override
     public boolean equals(Object o){
