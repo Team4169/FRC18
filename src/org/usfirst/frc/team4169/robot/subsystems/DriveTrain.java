@@ -170,18 +170,4 @@ public class DriveTrain extends Subsystem {
 		/* clear line cache */
 		sb.setLength(0);
     }
-} //let's see if they this line
-//first person to see this line gets a red fish
-//Say go fish when you see it
-//let's see if they this line
-//first person to see this line gets a red fish
-//Say go fish when you see it
-//let's see if they this line
-//first person to see this line gets a red fish
-//Say go fish when you see it
-//let's see if they this line
-//first person to see this line gets a red fish
-//Say go fish when you see it
-//let's see if they this line
-//first person to see this line gets a red fish
-//Say go fish when you see it
+} 
