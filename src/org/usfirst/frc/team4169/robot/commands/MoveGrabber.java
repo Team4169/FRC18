@@ -20,13 +20,13 @@ public class MoveGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		if (OI.getInstance().controller.getAButton() == true) {
-    			Robot.kGrabber.moveGrabber(1);
-    		} else if (OI.getInstance().controller.getBButton() == true) {
-    			Robot.kGrabber.moveGrabber(-1);
-    		} else {
-    			Robot.kGrabber.moveGrabber(0);
-    		}
+    	if (OI.getInstance().controller.getAButton()) {
+    		Robot.kGrabber.moveGrabber(1);
+    	} else if (OI.getInstance().controller.getBButton()) {
+    		Robot.kGrabber.moveGrabber(-1);
+   		} else {
+    		Robot.kGrabber.moveGrabber(0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,12 +36,12 @@ public class MoveGrabber extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    		Robot.kGrabber.moveGrabber(0);
+    	Robot.kGrabber.moveGrabber(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    		end();
+    	end();
     }
 }
