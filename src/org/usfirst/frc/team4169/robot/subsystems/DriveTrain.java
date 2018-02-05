@@ -95,8 +95,8 @@ public class DriveTrain extends Subsystem {
     		}
     		
     		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
-    			leftY = leftY / 4;
-    			rightY = rightY / 4;
+    			leftY = leftY / 2;
+    			rightY = rightY / 2;
     		}
     		
     		drive.tankDrive(leftY, rightY);

@@ -27,13 +27,13 @@ public class OI {
 	// Joystick stick = new Joystick(port);
 	// Button button = new JoystickButton(stick, buttonNumber);
 	
-	public XboxController controller = new XboxController(1);
+	public XboxController controller = new XboxController(0);
 	private JoystickButton AButton = new JoystickButton(controller, 1);
 	private JoystickButton BButton = new JoystickButton(controller, 2);
 	private JoystickButton XButton = new JoystickButton(controller, 3);
 	private JoystickButton YButton = new JoystickButton(controller, 4);
 	
-	private void OI(){
+	public OI(){
 		AButton.whenActive(new MoveLift());
 		BButton.whenActive(new MoveLift());
 		XButton.whenActive(new MoveGrabber());
