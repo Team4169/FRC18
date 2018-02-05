@@ -27,6 +27,7 @@ public class DriveTrain extends Subsystem {
 	static final int kSlotIdx = 0;
 	static final int kPIDLoopIdx = 0;
 	static final int kTimeoutMs = 10;
+	public static final int pulses = (int)SmartDashboard.getNumber("Pulses per revolution", 1440);
 	static int _loops = 0;
 	static int _timesInMotionMagic = 0;
 	
@@ -121,7 +122,7 @@ public class DriveTrain extends Subsystem {
 		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kLeft)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
-			double targetPos = 1440 * 10.0 * 12.0 / 6 / Math.PI;
+			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;
 			leftFrontMotor.set(ControlMode.MotionMagic, targetPos);
 
 			/* append more signals to print when in speed mode. */
