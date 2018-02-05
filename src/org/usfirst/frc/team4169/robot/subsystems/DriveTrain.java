@@ -118,7 +118,7 @@ public class DriveTrain extends Subsystem {
 		sb.append("\tVel:");
 		sb.append(leftFrontMotor.getSelectedSensorVelocity(kPIDLoopIdx));
 
-		if (OI.getInstance().controller.getXButton()) {
+		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kLeft)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
 			double targetPos = 1440 * 10.0 * 12.0 / 6 / Math.PI;
