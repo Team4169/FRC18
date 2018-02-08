@@ -24,6 +24,14 @@ import org.usfirst.frc.team4169.robot.RobotMap;
 
 public class DriveTrain extends Subsystem {
 	StringBuilder sb = new StringBuilder();
+	static final double leftkF = 1.02,
+			leftkP = 1.2,
+			leftkI = 0.004,
+			leftkD = 8.0,
+			rightkF = 1.02,
+			rightkP = 1.2,
+			rightkI = 0.004,
+			rightkD = 8.0;
 	static final int kSlotIdx = 0;
 	static final int kPIDLoopIdx = 0;
 	static final int kTimeoutMs = 10;
@@ -42,35 +50,60 @@ public class DriveTrain extends Subsystem {
 	static DifferentialDrive drive = new DifferentialDrive(left, right);
 	
 	public DriveTrain() {
-		left.setInverted(true);
+    	rightFrontMotor.setInverted(true);
+    	rightBackMotor.setInverted(true);
 		right.setInverted(true);
-		
+    	
 		/* first choose the sensor */
-		leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
-		leftFrontMotor.setSensorPhase(true);
-		leftFrontMotor.setInverted(false);
-
+		leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+		leftFrontMotor.setSensorPhase(false);
+		
+		rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
+		rightFrontMotor.setSensorPhase(false);
+		
 		/* Set relevant frame periods to be at least as fast as periodic rate */
 		leftFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, kTimeoutMs);
 		leftFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, kTimeoutMs);
-
+		
+		rightFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, kTimeoutMs);
+		rightFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, kTimeoutMs);
+		
 		/* set the peak and nominal outputs */
 		leftFrontMotor.configNominalOutputForward(0, kTimeoutMs);
 		leftFrontMotor.configNominalOutputReverse(0, kTimeoutMs);
 		leftFrontMotor.configPeakOutputForward(1, kTimeoutMs);
 		leftFrontMotor.configPeakOutputReverse(-1, kTimeoutMs);
+		
+		rightFrontMotor.configNominalOutputForward(0, kTimeoutMs);
+		rightFrontMotor.configNominalOutputReverse(0, kTimeoutMs);
+		rightFrontMotor.configPeakOutputForward(1, kTimeoutMs);
+		rightFrontMotor.configPeakOutputReverse(-1, kTimeoutMs);
 
 		/* set closed loop gains in slot0 - see documentation */
 		leftFrontMotor.selectProfileSlot(kSlotIdx, kPIDLoopIdx);
-		leftFrontMotor.config_kF(0, SmartDashboard.getNumber("Left kF", 0.2), kTimeoutMs);
-		leftFrontMotor.config_kP(0, SmartDashboard.getNumber("Left kP", 0.2), kTimeoutMs);
-		leftFrontMotor.config_kI(0, SmartDashboard.getNumber("Left kI", 0), kTimeoutMs);
-		leftFrontMotor.config_kD(0, SmartDashboard.getNumber("Left kD", 0), kTimeoutMs);
+		leftFrontMotor.config_kF(0, leftkF, kTimeoutMs);
+		leftFrontMotor.config_kP(0, leftkP, kTimeoutMs);
+		leftFrontMotor.config_kI(0, leftkI, kTimeoutMs);
+		leftFrontMotor.config_kD(0, leftkD, kTimeoutMs);
+		leftFrontMotor.config_IntegralZone(0, 50, kTimeoutMs);
+		
+		rightFrontMotor.selectProfileSlot(kSlotIdx, kPIDLoopIdx);
+		rightFrontMotor.config_kF(0, rightkF, kTimeoutMs);
+		rightFrontMotor.config_kP(0, rightkP, kTimeoutMs);
+		rightFrontMotor.config_kI(0, rightkI, kTimeoutMs);
+		rightFrontMotor.config_kD(0, rightkD, kTimeoutMs);
+		rightFrontMotor.config_IntegralZone(0, 50, kTimeoutMs);
+		
 		/* set acceleration and vcruise velocity - see documentation */
-		leftFrontMotor.configMotionCruiseVelocity(15000, kTimeoutMs);
-		leftFrontMotor.configMotionAcceleration(6000, kTimeoutMs);
+		leftFrontMotor.configMotionCruiseVelocity(750, kTimeoutMs);
+		leftFrontMotor.configMotionAcceleration(750, kTimeoutMs);
+		
+		rightFrontMotor.configMotionCruiseVelocity(750, kTimeoutMs);
+		rightFrontMotor.configMotionAcceleration(750, kTimeoutMs);
 		/* zero the sensor */
 		leftFrontMotor.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
+		
+		rightFrontMotor.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
 	}
 	
     // Put methods for controlling this subsystem
@@ -84,8 +117,8 @@ public class DriveTrain extends Subsystem {
     
     //drives the robot using controller values
     public void drive() {
-    		double leftY = OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
-    		double rightY = OI.getInstance().controller.getY(GenericHID.Hand.kRight);
+    		double leftY = -OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
+    		double rightY = -OI.getInstance().controller.getY(GenericHID.Hand.kRight);
     		
     		if (Math.abs(leftY) < 0.2) {
     			leftY = 0;
@@ -110,33 +143,67 @@ public class DriveTrain extends Subsystem {
     
     public void pidTest() {
     	/* get gamepad axis - forward stick is positive */
-		double leftYstick =	OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
+		double leftYstick =	-OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
+		double rightYstick = -OI.getInstance().controller.getY(GenericHID.Hand.kRight);
+		sb.append("\trightStick:");
+		sb.append(rightYstick);
+		sb.append("\tleftStick:");
+		sb.append(leftYstick);
 		/* calculate the percent motor output */
-		double motorOutput = leftFrontMotor.getMotorOutputPercent();
+		double lmotorOutput = leftFrontMotor.getMotorOutputPercent();
+		double rmotorOutput = rightFrontMotor.getMotorOutputPercent();
 		/* prepare line to print */
-		sb.append("\tOut%:");
-		sb.append(motorOutput);
-		sb.append("\tVel:");
+		sb.append("\tleftOut%:");
+		sb.append(lmotorOutput);
+		sb.append("\tleftVel:");
 		sb.append(leftFrontMotor.getSelectedSensorVelocity(kPIDLoopIdx));
+		sb.append("\trightOut%:");
+		sb.append(rmotorOutput);
+		sb.append("\trightVel:");
+		sb.append(rightFrontMotor.getSelectedSensorVelocity(kPIDLoopIdx));
 
 		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kLeft)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
 			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;
-			leftFrontMotor.set(ControlMode.MotionMagic, targetPos);
-
+			
+			if (!(leftFrontMotor.getControlMode() == ControlMode.MotionMagic)) {
+				leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
+				leftFrontMotor.set(ControlMode.MotionMagic, targetPos);
+				leftBackMotor.follow(leftFrontMotor);
+			}
+			
 			/* append more signals to print when in speed mode. */
 			sb.append("\terr:");
 			sb.append(leftFrontMotor.getClosedLoopError(kPIDLoopIdx));
 			sb.append("\ttrg:");
 			sb.append(targetPos);
-		} else {
+		} else if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
+			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
+			// Motion Magic for 10 ft
+			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;
+			
+			if (!(rightFrontMotor.getControlMode() == ControlMode.MotionMagic)) {
+				rightFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
+				rightFrontMotor.set(ControlMode.MotionMagic, targetPos);
+				rightBackMotor.follow(rightFrontMotor);
+			}
+			
+			/* append more signals to print when in speed mode. */
+			sb.append("\terr:");
+			sb.append(rightFrontMotor.getClosedLoopError(kPIDLoopIdx));
+			sb.append("\ttrg:");
+			sb.append(targetPos);
+    	} else {
 			/* Percent voltage mode */
 			leftFrontMotor.set(ControlMode.PercentOutput, leftYstick);
+			leftBackMotor.follow(leftFrontMotor);
+			rightFrontMotor.set(ControlMode.PercentOutput, rightYstick);
+			rightBackMotor.follow(rightFrontMotor);
 		}
 		
 		/* instrumentation */
-		process(leftFrontMotor, sb);
+		process(rightFrontMotor, sb);
 		try {
 			TimeUnit.MILLISECONDS.sleep(10);
 		} catch (Exception e) {
