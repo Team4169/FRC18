@@ -24,6 +24,8 @@ import org.usfirst.frc.team4169.robot.RobotMap;
 
 public class DriveTrain extends Subsystem {
 	StringBuilder sb = new StringBuilder();
+	static final double closedLoopErrorConstant = 0.1;
+	static final double inchesPerCompleteTurn = 28*Math.PI;
 	static final int kSlotIdx = 0;
 	static final int kPIDLoopIdx = 0;
 	static final int kTimeoutMs = 10;
@@ -170,5 +172,23 @@ public class DriveTrain extends Subsystem {
 		}
 		/* clear line cache */
 		sb.setLength(0);
+    }
+    
+    public void driveForDistance(double distance) {
+    	leftFrontMotor.set(ControlMode.MotionMagic, distance);
+    	leftBackMotor.follow(leftFrontMotor);
+    	rightFrontMotor.set(ControlMode.MotionMagic, distance);
+    	rightBackMotor.follow(leftFrontMotor);
+    }
+    public void turnForDegrees(double degrees){
+    	double distance = (pulses/(6*Math.PI)) * inchesPerCompleteTurn * (degrees/360);
+    	rightFrontMotor.set(ControlMode.MotionMagic, distance);
+    	rightBackMotor.follow(leftFrontMotor);
+    	leftFrontMotor.set(ControlMode.MotionMagic, -distance);
+    	leftBackMotor.follow(leftFrontMotor);
+    }
+    public boolean checkClosedLoopError() {
+    	return Math.abs(leftFrontMotor.getClosedLoopError(kPIDLoopIdx)) < closedLoopErrorConstant &&
+    			Math.abs(rightFrontMotor.getClosedLoopError(kPIDLoopIdx)) < closedLoopErrorConstant;
     }
 } 
