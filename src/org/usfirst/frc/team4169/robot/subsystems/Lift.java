@@ -3,7 +3,7 @@ package org.usfirst.frc.team4169.robot.subsystems;
 import org.usfirst.frc.team4169.robot.RobotMap;
 import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,6 +28,9 @@ public class Lift extends Subsystem {
     	} else {
     		liftMotor.set(0);
     	}
+    }
+    public void moveLiftToPosition(double inches){
+    	liftMotor.set(ControlMode.MotionMagic, 8640*inches/Math.PI);
     }
 }
 
