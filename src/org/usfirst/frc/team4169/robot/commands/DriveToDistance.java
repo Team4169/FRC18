@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4169.robot.commands;
 
 import org.usfirst.frc.team4169.robot.Robot;
+import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,11 +12,12 @@ public class DriveToDistance extends Command {
 	double pulses;
     public DriveToDistance(double distance) {
         requires(Robot.kDriveTrain);
-        pulses = distance / 6 / Math.PI * Robot.kDriveTrain.pulses;
+        pulses = distance / 6 / Math.PI * DriveTrain.pulses;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.kDriveTrain.driveSafetyEnabled(false);
     	Robot.kDriveTrain.driveForDistance(pulses);
     }
 
@@ -30,6 +32,7 @@ public class DriveToDistance extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.kDriveTrain.driveSafetyEnabled(true);
     	Robot.kDriveTrain.stop();
     }
 

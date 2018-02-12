@@ -7,11 +7,13 @@
 
 package org.usfirst.frc.team4169.robot;
 
+import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
 import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,12 +34,15 @@ public class OI {
 	private JoystickButton BButton = new JoystickButton(controller, 2);
 	private JoystickButton XButton = new JoystickButton(controller, 3);
 	private JoystickButton YButton = new JoystickButton(controller, 4);
+	private JoystickButton rB = new JoystickButton(controller, 6);
 	
 	public OI(){
 		AButton.whenActive(new MoveLift());
 		BButton.whenActive(new MoveLift());
 		XButton.whenActive(new MoveGrabber());
 		YButton.whenActive(new MoveGrabber());
+
+		rB.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
 	}
 	
 	public static OI getInstance() {

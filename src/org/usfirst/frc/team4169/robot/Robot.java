@@ -138,6 +138,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		kDriveTrain.pidTest();
+		kDriveTrain.speedTest();
 	}
 }

@@ -32,7 +32,8 @@ public class DriveTrain extends Subsystem {
 			rightkP = 1.2,
 			rightkI = 0.004,
 			rightkD = 8.0;
-	static final int closedLoopErrorConstant = 15;
+	static final int closedLoopErrorConstant = 20;
+	static final int velocityConstant = 5;
 	static final double inchesPerCompleteTurn = 28*Math.PI;
 	static final int kSlotIdx = 0;
 	static final int kPIDLoopIdx = 0;
@@ -55,7 +56,7 @@ public class DriveTrain extends Subsystem {
     	rightFrontMotor.setInverted(true);
     	rightBackMotor.setInverted(true);
 		right.setInverted(true);
-    	
+		
 		/* first choose the sensor */
 		leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
 		leftFrontMotor.setSensorPhase(false);
@@ -140,7 +141,7 @@ public class DriveTrain extends Subsystem {
     
     //stops the robot
     public void stop() {
-    	drive.tankDrive(0, 0);
+    	//drive.tankDrive(0, 0);
     }
     
     public void pidTest() {
@@ -242,20 +243,47 @@ public class DriveTrain extends Subsystem {
     }
     
     public void driveForDistance(double distance) {
+    	rightFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
+    	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
+    	System.out.println("In DriveForDistance: " + distance);
     	leftFrontMotor.set(ControlMode.MotionMagic, distance);
     	leftBackMotor.follow(leftFrontMotor);
     	rightFrontMotor.set(ControlMode.MotionMagic, distance);
     	rightBackMotor.follow(leftFrontMotor);
     }
+
     public void turnForDegrees(double degrees){
+    	rightFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
+    	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
     	double distance = (pulses/(6*Math.PI)) * inchesPerCompleteTurn * (degrees/360);
     	rightFrontMotor.set(ControlMode.MotionMagic, distance);
     	rightBackMotor.follow(leftFrontMotor);
     	leftFrontMotor.set(ControlMode.MotionMagic, -distance);
     	leftBackMotor.follow(leftFrontMotor);
     }
+    
     public boolean checkClosedLoopError() {
-    	return Math.abs(leftFrontMotor.getClosedLoopError(kPIDLoopIdx)) < closedLoopErrorConstant &&
-    			Math.abs(rightFrontMotor.getClosedLoopError(kPIDLoopIdx)) < closedLoopErrorConstant;
+    	return Math.abs(leftFrontMotor.getSelectedSensorPosition(kSlotIdx) - leftFrontMotor.getClosedLoopTarget(kPIDLoopIdx)) < closedLoopErrorConstant &&
+    			Math.abs(rightFrontMotor.getSelectedSensorPosition(kSlotIdx) - rightFrontMotor.getClosedLoopTarget(kPIDLoopIdx)) < closedLoopErrorConstant &&
+    			Math.abs(leftFrontMotor.getSelectedSensorVelocity(kPIDLoopIdx)) < velocityConstant;
+    }
+    
+    public void driveSafetyEnabled(boolean foo) {
+    	drive.setSafetyEnabled(foo);
+    }
+    
+    public void speedTest() {
+    	drive.tankDrive(1, 0);
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("\tleftVel:");
+    	sb.append(leftFrontMotor.getSelectedSensorVelocity(kSlotIdx));
+    	sb.append("\trightVel:");
+    	sb.append(rightFrontMotor.getSelectedSensorPosition(kSlotIdx));
+    	sb.append("\tleftCount");
+    	sb.append(leftFrontMotor.getSelectedSensorPosition(kSlotIdx));
+    	sb.append("\trightCount");
+    	sb.append(rightFrontMotor.getSelectedSensorPosition(kSlotIdx));
+    	System.out.println(sb.toString());
     }
 } 
+
