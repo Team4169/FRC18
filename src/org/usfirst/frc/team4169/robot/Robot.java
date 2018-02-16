@@ -97,42 +97,41 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		int x = 0;
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if (gameData.length() > 0) {
-			if(gameData.charAt(0) == 'L' && gameData.charAt(1) == 'L'){
-				x = 1;
-			}
-			else if(gameData.charAt(0) == 'L' && gameData.charAt(1) == 'R'){
-				x = 2;
-			}
-			else if(gameData.charAt(0) == 'R' && gameData.charAt(1) == 'L'){
-				x = 3;
-			}
-			else if(gameData.charAt(0) == 'R' && gameData.charAt(1) == 'R'){
-				x = 4;
+			char swi = gameData.charAt(0);
+			char sca = gameData.charAt(1);
+			
+			if (swi == 'L') {
+				if (sca == 'L') {
+					if ((int)SmartDashboard.getNumber("sos1", 0) == 0) {
+						m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1"))
+					} else {
+						
+					}
+				} else {
+					if ((int)SmartDashboard.getNumber("sos2", 0) == 0) {
+						
+					} else {
+						
+					}
+				}
+			} else {
+				if (sca == 'L') {
+					if ((int)SmartDashboard.getNumber("sos3", 0) == 0) {
+						
+					} else {
+						
+					}
+				} else {
+					if ((int)SmartDashboard.getNumber("sos4", 0) == 0) {
+						
+					} else {
+						
+					}
+				}
 			}
 		}
-		
-		switch(x) {
-			case 1:
-				m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1", 1), (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), (int)SmartDashboard.getNumber("sosDir1", 1));
-				break;
-			case 2:
-				m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), (int)SmartDashboard.getNumber("sosDir2", 1));
-				break;
-			case 3:
-				m_autonomousCommand3 = new AutoCommand((int)SmartDashboard.getNumber("slot3", 1), (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), (int)SmartDashboard.getNumber("sosDir3", 1));
-				break;
-			case 4:
-				m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), (int)SmartDashboard.getNumber("sosDir4", 1));
-				break;
-		}
-		
-		
-		
-		
-		
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -142,18 +141,6 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand1 != null) {
-			m_autonomousCommand1.start();
-		}
-		if (m_autonomousCommand2 != null) {
-			m_autonomousCommand2.start();
-		}
-		if (m_autonomousCommand3 != null) {
-			m_autonomousCommand3.start();
-		}
-		if (m_autonomousCommand4 != null) {
-			m_autonomousCommand4.start();
-		}
 	}
 
 	/**
