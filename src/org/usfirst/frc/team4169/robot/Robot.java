@@ -105,29 +105,29 @@ public class Robot extends TimedRobot {
 			if (swi == 'L') {
 				if (sca == 'L') {
 					if ((int)SmartDashboard.getNumber("sos1", 0) == 0) {
-						m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1"))
+						m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1", 1), (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 0);
 					} else {
-						
+						m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1", 1), (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 1);
 					}
 				} else {
 					if ((int)SmartDashboard.getNumber("sos2", 0) == 0) {
-						
+						m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 0);
 					} else {
-						
+						m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 1);
 					}
 				}
 			} else {
 				if (sca == 'L') {
 					if ((int)SmartDashboard.getNumber("sos3", 0) == 0) {
-						
+						m_autonomousCommand3 = new AutoCommand((int)SmartDashboard.getNumber("slot3", 1), (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 0);
 					} else {
-						
+						m_autonomousCommand3 = new AutoCommand((int)SmartDashboard.getNumber("slot3", 1), (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 1);
 					}
 				} else {
 					if ((int)SmartDashboard.getNumber("sos4", 0) == 0) {
-						
+						m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 0);
 					} else {
-						
+						m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 1);
 					}
 				}
 			}
