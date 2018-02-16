@@ -11,6 +11,7 @@
 package org.usfirst.frc.team4169.robot;
 
 
+import org.usfirst.frc.team4169.robot.commands.AutoCommand;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
@@ -19,6 +20,7 @@ import org.usfirst.frc.team4169.robot.subsystems.Lift;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -48,7 +50,11 @@ public class Robot extends TimedRobot {
 	double y = ty.getDouble(0);
 	double area = ta.getDouble(0);
 	
-	Command m_autonomousCommand;
+	Command m_autonomousCommand1;
+	Command m_autonomousCommand2;
+	Command m_autonomousCommand3;
+	Command m_autonomousCommand4;
+	
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
@@ -91,7 +97,42 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		int x = 0;
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if (gameData.length() > 0) {
+			if(gameData.charAt(0) == 'L' && gameData.charAt(1) == 'L'){
+				x = 1;
+			}
+			else if(gameData.charAt(0) == 'L' && gameData.charAt(1) == 'R'){
+				x = 2;
+			}
+			else if(gameData.charAt(0) == 'R' && gameData.charAt(1) == 'L'){
+				x = 3;
+			}
+			else if(gameData.charAt(0) == 'R' && gameData.charAt(1) == 'R'){
+				x = 4;
+			}
+		}
+		
+		switch(x) {
+			case 1:
+				m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1", 1), (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), (int)SmartDashboard.getNumber("sosDir1", 1));
+				break;
+			case 2:
+				m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), (int)SmartDashboard.getNumber("sosDir2", 1));
+				break;
+			case 3:
+				m_autonomousCommand3 = new AutoCommand((int)SmartDashboard.getNumber("slot3", 1), (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), (int)SmartDashboard.getNumber("sosDir3", 1));
+				break;
+			case 4:
+				m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), (int)SmartDashboard.getNumber("sosDir4", 1));
+				break;
+		}
+		
+		
+		
+		
+		
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -101,8 +142,17 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if (m_autonomousCommand1 != null) {
+			m_autonomousCommand1.start();
+		}
+		if (m_autonomousCommand2 != null) {
+			m_autonomousCommand2.start();
+		}
+		if (m_autonomousCommand3 != null) {
+			m_autonomousCommand3.start();
+		}
+		if (m_autonomousCommand4 != null) {
+			m_autonomousCommand4.start();
 		}
 	}
 
@@ -120,8 +170,17 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (m_autonomousCommand1 != null) {
+			m_autonomousCommand1.cancel();
+		}
+		if (m_autonomousCommand2 != null) {
+			m_autonomousCommand2.cancel();
+		}
+		if (m_autonomousCommand3 != null) {
+			m_autonomousCommand3.cancel();
+		}
+		if (m_autonomousCommand4 != null) {
+			m_autonomousCommand4.cancel();
 		}
 	}
 

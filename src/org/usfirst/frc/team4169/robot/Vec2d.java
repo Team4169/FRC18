@@ -12,7 +12,7 @@ public class Vec2d {
      * @param x x-coord
      * @param y y-coord
      */
-     private Vec2d(double x, double y) {
+     private  Vec2d(double x, double y) {
     	 this.x = x;
     	 this.y = y;
      }

@@ -1,16 +1,18 @@
 package org.usfirst.frc.team4169.robot.commands;
 
-import org.usfirst.frc.team4169.robot.Robot;
+
+import org.usfirst.frc.team4169.robot.Vec2d;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
+
 
 /**
  *
  */
 public class AutoCommand extends CommandGroup {
 
-    public AutoCommand(int slot, int orient, int switchOrScale, double delay, int dirSOS) {
+    public AutoCommand(int slot, int dir, int sos, double delay, int sosDir){
+    	int length = 15;
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -27,35 +29,55 @@ public class AutoCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	int dirMatch = Math.abs(switchOrScale - dirSOS);
-    	//			  0  1   2    3   4   5   6  7  8   9  10  11  12  13   14 15  16 17
-    	int dist[] = {29,149,221,101,29, 90,-90, 26,84, 17,30, 108,268,188, 70,80};
-    	int a = dist[slot + 2 * orient - 1]; //Distance to a side
-    	int b = dist[orient + 5]; //First turn
-    	int c = dist[switchOrScale + 7]; //Height of lift
-    	int d = dist[switchOrScale + 9]; //Distance from side to target (Switch or Scale)
-    	int e = dist[switchOrScale * (1 - dirMatch) + 2 * dirMatch + 11]; //Second drive distance
-    	int f = dist[switchOrScale + 14]; //Distance from crossing point to target
+   
+    	Vec2d startingPositions[] = {Vec2d.makeCart(65.69, 17.25), Vec2d.makeCart(185.69, 17.25), Vec2d.makeCart(257.69, 17.25)};
+    	//			  	x:0      1       2       3      4       5      6       7
+    	double xDist[] = {75.69, 196.69, 268.69, 17.69, 305.69, 16.69, 305.69, 68,
+    			//        8       9      10      11     12      13     14
+    	                  255.38, 17.69, 305.69, 17.69, 305.69, 54.32, 269.06};
+    	//              y:0   1   2   3   4   5    6    7    8   
+    	double yDist[] = {32, 32, 32, 32, 32, 168, 168, 168, 168, 
+    			//        9    10   11   12   13   14
+    					  232, 232, 324, 324, 324, 324};
     	
-    	addSequential(new WaitCommand(delay));
-    	addSequential(new DriveToDistance(32));
-    	addSequential(new TurnForDegrees(b));
-    	addSequential(new DriveToDistance(a));
-    	addSequential(new TurnForDegrees(-b));
-    	addSequential(new DriveToDistance(e));
+    	Vec2d dist[] = new Vec2d[length];
+    	for(int i = 0; i < length; i++){
+    		dist[i] = Vec2d.makeCart(xDist[i], yDist[i]);
+    	}
     	
-    	addSequential(new TurnForDegrees(-b * dirMatch));
-    	addSequential(new DriveToDistance(254 * dirMatch));
-    	addSequential(new TurnForDegrees((2 * switchOrScale - 1) * b * dirMatch));
-    	addSequential(new DriveToDistance(f * dirMatch));
+    	Vec2d currentPosition = startingPositions[slot - 1];
     	
-    	addSequential(new TurnForDegrees(-b));
-    	addSequential(new DriveToDistance(d));
-    	addSequential(new MoveLiftToPosition(c));
-    	Robot.kGrabber.moveGrabber(-1);
-    	addSequential(new MoveLiftToPosition(-c));
-    	addSequential(new DriveToDistance(-(d + 16)));
+    	addSequential(new DriveToPoint(currentPosition, dist[slot - 1]));
+    	currentPosition.add(dist[slot - 1].sub(currentPosition));
     	
+    	addSequential(new DriveToPoint(currentPosition, dist[dir + 3]));
+    	currentPosition.add(dist[dir + 3].sub(currentPosition));
+    	
+    	addSequential(new DriveToPoint(currentPosition, dist[(9 + dir) * Math.abs(sosDir - dir)
+    	                              + (dir + 3) * (1 - Math.abs(sosDir - dir))]));
+    	currentPosition.add(dist[(9 + dir) * Math.abs(sosDir - dir)
+    	                              + (dir + 3) * (1 - Math.abs(sosDir - dir))].sub(currentPosition));
+    	
+    	addSequential(new DriveToPoint(currentPosition, dist[(10 - dir) * Math.abs(sosDir - dir) 
+    	                                           + (dir + 3) * (1 - Math.abs(sosDir - dir))]));
+    	currentPosition.add(dist[(10 - dir) * Math.abs(sosDir - dir) 
+    	                + (dir + 3) * (1 - Math.abs(sosDir - dir))].sub(currentPosition));
+    	
+    	addSequential(new DriveToPoint(currentPosition, dist[5 + sosDir + 6 * sos]));
+    	currentPosition.add(dist[5 + sosDir + 6 * sos].sub(currentPosition));
+    	
+    	addSequential(new DriveToPoint(currentPosition, dist[7 + sosDir + 6 * sos]));
+    	currentPosition.add(dist[7 + sosDir + 6 * sos].sub(currentPosition));
+    	
+    	addSequential(new DriveToPoint(currentPosition, dist[5 + sosDir + 6 * sos]));
+    	currentPosition.add(dist[5 + sosDir + 6 * sos].sub(currentPosition));
+    	
+    	addSequential(new DriveToPoint(currentPosition, dist[9 + sosDir]));
+    	currentPosition.add(dist[9 + sosDir].sub(currentPosition));
+    	
+    	
+    	
+    
     	
     	
     	//addSequential(new liftToPosition(c);
