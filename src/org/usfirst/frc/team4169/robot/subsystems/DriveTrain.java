@@ -257,7 +257,7 @@ public class DriveTrain extends Subsystem {
     	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
     	double distance = (pulses/(6*Math.PI)) * inchesPerCompleteTurn * (degrees/360);
     	rightFrontMotor.set(ControlMode.MotionMagic, distance);
-    	rightBackMotor.follow(leftFrontMotor);
+    	rightBackMotor.follow(rightFrontMotor);
     	leftFrontMotor.set(ControlMode.MotionMagic, -distance);
     	leftBackMotor.follow(leftFrontMotor);
     }
@@ -273,7 +273,7 @@ public class DriveTrain extends Subsystem {
     }
     
     public void speedTest() {
-    	drive.tankDrive(1, 0);
+    	drive.tankDrive(1, 1);
     	StringBuilder sb = new StringBuilder();
     	sb.append("\tleftVel:");
     	sb.append(leftFrontMotor.getSelectedSensorVelocity(kSlotIdx));
