@@ -11,11 +11,13 @@
 package org.usfirst.frc.team4169.robot;
 
 
+import org.usfirst.frc.team4169.robot.commands.AutoCommand;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,7 +40,13 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 	public static final Limelight limelight = new Limelight();
 	
-	Command m_autonomousCommand;
+	
+	Command m_autonomousCommand;	
+	Command m_autonomousCommand1;
+	Command m_autonomousCommand2;
+	Command m_autonomousCommand3;
+	Command m_autonomousCommand4;
+	
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
@@ -91,7 +99,41 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if (gameData.length() > 0) {
+			char swi = gameData.charAt(0);
+			char sca = gameData.charAt(1);
+			
+			if (swi == 'L') {
+				if (sca == 'L') {
+					if ((int)SmartDashboard.getNumber("sos1", 0) == 0) {
+						m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1", 1), (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 0);
+					} else {
+						m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1", 1), (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 1);
+					}
+				} else {
+					if ((int)SmartDashboard.getNumber("sos2", 0) == 0) {
+						m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 0);
+					} else {
+						m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 1);
+					}
+				}
+			} else {
+				if (sca == 'L') {
+					if ((int)SmartDashboard.getNumber("sos3", 0) == 0) {
+						m_autonomousCommand3 = new AutoCommand((int)SmartDashboard.getNumber("slot3", 1), (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 0);
+					} else {
+						m_autonomousCommand3 = new AutoCommand((int)SmartDashboard.getNumber("slot3", 1), (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 1);
+					}
+				} else {
+					if ((int)SmartDashboard.getNumber("sos4", 0) == 0) {
+						m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 0);
+					} else {
+						m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 1);
+					}
+				}
+			}
+		}
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -101,9 +143,6 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
 	}
 
 	/**
@@ -120,8 +159,17 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (m_autonomousCommand1 != null) {
+			m_autonomousCommand1.cancel();
+		}
+		if (m_autonomousCommand2 != null) {
+			m_autonomousCommand2.cancel();
+		}
+		if (m_autonomousCommand3 != null) {
+			m_autonomousCommand3.cancel();
+		}
+		if (m_autonomousCommand4 != null) {
+			m_autonomousCommand4.cancel();
 		}
 		
 		limelight.setLedMode(Limelight.LightMode.eBlink);
