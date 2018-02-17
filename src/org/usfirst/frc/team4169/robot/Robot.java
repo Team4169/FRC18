@@ -20,6 +20,7 @@ import org.usfirst.frc.team4169.robot.subsystems.Lift;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -36,11 +37,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-
+	
 	public static final DriveTrain kDriveTrain = new DriveTrain();
 	public static final Grabber kGrabber = new Grabber();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
+	public static DigitalInput LimitSwitch;
 	
 	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	NetworkTableEntry tx = table.getEntry("tx");
@@ -56,7 +58,8 @@ public class Robot extends TimedRobot {
 	Command m_autonomousCommand4;
 	
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
-
+	
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
