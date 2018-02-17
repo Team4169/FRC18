@@ -18,9 +18,6 @@ import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.DriverStation;
