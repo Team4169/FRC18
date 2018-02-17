@@ -16,9 +16,6 @@ import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -39,14 +36,7 @@ public class Robot extends TimedRobot {
 	public static final Grabber kGrabber = new Grabber();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
-	
-	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-	NetworkTableEntry tx = table.getEntry("tx");
-	NetworkTableEntry ty = table.getEntry("ty");
-	NetworkTableEntry ta = table.getEntry("ta");
-	double x = tx.getDouble(0);
-	double y = ty.getDouble(0);
-	double area = ta.getDouble(0);
+	public static final Limelight limelight = new Limelight();
 	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -60,8 +50,16 @@ public class Robot extends TimedRobot {
 		m_oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
-		
 		SmartDashboard.putData("Drive Train", kDriveTrain);
+		limelight.setLedMode(Limelight.LightMode.eOff);
+		try {
+			Thread.sleep(22500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		limelight.setLedMode(Limelight.LightMode.eOn);
+		limelight.setLedMode(Limelight.LightMode.eOff);		
 	}
 
 	/**
@@ -71,11 +69,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		limelight.setLedMode(Limelight.LightMode.eOn);
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		limelight.setLedMode(Limelight.LightMode.eOff);
 	}
 
 	/**
@@ -123,6 +123,9 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		limelight.setLedMode(Limelight.LightMode.eBlink);
+
 	}
 
 	/**
@@ -138,6 +141,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		kDriveTrain.speedTest();
+		limelight.setLedMode(Limelight.LightMode.eOn);
 	}
 }
