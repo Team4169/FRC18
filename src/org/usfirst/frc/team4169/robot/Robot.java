@@ -17,13 +17,12 @@ import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
 
-<<<<<<< HEAD
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
-=======
->>>>>>> 6c7614f3eea3d564a766c955efb93199360ef0d6
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -45,11 +44,11 @@ public class Robot extends TimedRobot {
 	public static final Grabber kGrabber = new Grabber();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
-<<<<<<< HEAD
+
 	public static DigitalInput LimitSwitch;
-=======
+
 	public static final Limelight limelight = new Limelight();
->>>>>>> 6c7614f3eea3d564a766c955efb93199360ef0d6
+
 	
 	
 	Command m_autonomousCommand;	
