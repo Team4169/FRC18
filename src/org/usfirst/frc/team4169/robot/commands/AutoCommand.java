@@ -80,12 +80,5 @@ public class AutoCommand extends CommandGroup {
     	
     	addSequential(new DriveToPoint(currentPosition, dist[9 + sosDir]));
     	currentPosition.add(dist[9 + sosDir].sub(currentPosition));
-    	
-    	
-    	
-    
-    	
-    	
-    	//addSequential(new liftToPosition(c);
     }
 }
