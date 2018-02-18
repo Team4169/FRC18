@@ -9,16 +9,18 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveToPoint extends Command {
+	Vec2d initial;
 	Vec2d target;
     public DriveToPoint(Vec2d vecInit, Vec2d dest) {
         requires(Robot.kDriveTrain);
         target = dest.sub(vecInit);
+        initial = vecInit;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.kDriveTrain.driveSafetyEnabled(false);
-    	Robot.kDriveTrain.turnForDegrees(target.getTheta());
+    	Robot.kDriveTrain.turnForDegrees(target.getTheta() - initial.getTheta());
     	Robot.kDriveTrain.driveForDistance(target.getR());
     }
 
