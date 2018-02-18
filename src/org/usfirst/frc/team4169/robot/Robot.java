@@ -14,12 +14,8 @@ package org.usfirst.frc.team4169.robot;
 import org.usfirst.frc.team4169.robot.commands.AutoCommand;
 import org.usfirst.frc.team4169.robot.commands.DriveToListOfPoints;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
-
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
-
-
-import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -42,12 +38,7 @@ public class Robot extends TimedRobot {
 	public static final Grabber kGrabber = new Grabber();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
-
-	public static DigitalInput LimitSwitch;
-
 	public static final Limelight limelight = new Limelight();
-
-	
 	
 	Command m_autonomousCommand;
 	
@@ -134,8 +125,8 @@ public class Robot extends TimedRobot {
 			
 			if (swi == 'L') {
 				if (sca == 'L') {
-					if (SmartDashboard.getBoolean("list?1", false)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr1);
+					if (SmartDashboard.getBoolean("list?1", true)) {
+						m_autonomousCommand = new DriveToListOfPoints(slot, arr1, SmartDashboard.getNumber("delay1", 0));
 					} else {
 						if ((int)SmartDashboard.getNumber("sos1", 0) == 0) {
 							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 0);
@@ -144,8 +135,8 @@ public class Robot extends TimedRobot {
 						}
 					}
 				} else {
-					if (SmartDashboard.getBoolean("list?2", false)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr2);
+					if (SmartDashboard.getBoolean("list?2", true)) {
+						m_autonomousCommand = new DriveToListOfPoints(slot, arr2, SmartDashboard.getNumber("delay2", 0));
 					} else {
 						if ((int)SmartDashboard.getNumber("sos2", 0) == 0) {
 							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 0);
@@ -156,8 +147,8 @@ public class Robot extends TimedRobot {
 				}
 			} else {
 				if (sca == 'L') {
-					if (SmartDashboard.getBoolean("list?3", false)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr3);
+					if (SmartDashboard.getBoolean("list?3", true)) {
+						m_autonomousCommand = new DriveToListOfPoints(slot, arr3, SmartDashboard.getNumber("delay3", 0));
 					} else {
 						if ((int)SmartDashboard.getNumber("sos3", 0) == 0) {
 							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 0);
@@ -166,8 +157,8 @@ public class Robot extends TimedRobot {
 						}
 					}
 				} else {
-					if (SmartDashboard.getBoolean("list?4", false)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr4);
+					if (SmartDashboard.getBoolean("list?4", true)) {
+						m_autonomousCommand = new DriveToListOfPoints(slot, arr4, SmartDashboard.getNumber("delay4", 0));
 					} else {
 						if ((int)SmartDashboard.getNumber("sos4", 0) == 0) {
 							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 0);

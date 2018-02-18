@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4169.robot.commands;
-
-import org.usfirst.frc.team4169.robot.OI;
 import org.usfirst.frc.team4169.robot.Robot;
+import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,7 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class MoveGrabber extends Command {
-    public MoveGrabber() {
+	Grabber.Speed speed;
+	
+    public MoveGrabber(Grabber.Speed spd) {
+    	speed = spd;
         requires(Robot.kGrabber);
     }
 
@@ -19,23 +21,17 @@ public class MoveGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (OI.getInstance().controller.getAButton()) {
-    		Robot.kGrabber.moveGrabber(1);
-    	} else if (OI.getInstance().controller.getBButton()) {
-    		Robot.kGrabber.moveGrabber(-1);
-   		} else {
-    		Robot.kGrabber.moveGrabber(0);
-    	}
+    	Robot.kGrabber.moveGrabber(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return Robot.LimitSwitch.get();
+    	return Robot.kGrabber.isSwitchSet();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.kGrabber.moveGrabber(0);
+    	Robot.kGrabber.moveGrabber(Grabber.Speed.eStop);
     }
 
     // Called when another command which requires one or more of the same

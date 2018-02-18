@@ -3,13 +3,14 @@ package org.usfirst.frc.team4169.robot.commands;
 import org.usfirst.frc.team4169.robot.Vec2d;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
  */
 public class DriveToListOfPoints extends CommandGroup {
 
-    public DriveToListOfPoints(int slot, int destinations[]) {
+    public DriveToListOfPoints(int slot, int destinations[], double delay) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -42,7 +43,7 @@ public class DriveToListOfPoints extends CommandGroup {
     	}
     	
     	Vec2d currentPosition = startingPositions[slot - 1];
-    	
+    	addSequential(new WaitCommand(delay));
     	for (int i = 0; i < destinations.length; i++) {
     		addSequential(new DriveToPoint(currentPosition, dist[destinations[i]]));
     		currentPosition.add(dist[destinations[i]]);
