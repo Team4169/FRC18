@@ -13,12 +13,8 @@ package org.usfirst.frc.team4169.robot;
 
 import org.usfirst.frc.team4169.robot.commands.AutoCommand;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
-
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
-
-
-import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -41,12 +37,7 @@ public class Robot extends TimedRobot {
 	public static final Grabber kGrabber = new Grabber();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
-
-	public static DigitalInput LimitSwitch;
-
 	public static final Limelight limelight = new Limelight();
-
-	
 	
 	Command m_autonomousCommand;	
 	Command m_autonomousCommand1;

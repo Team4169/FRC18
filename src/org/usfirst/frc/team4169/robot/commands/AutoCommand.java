@@ -71,7 +71,7 @@ public class AutoCommand extends CommandGroup {
     	
     	
     	addSequential(new MoveLiftToPosition(26 * (1 - sos) + 84 * sos));
-    	addSequential(new MoveGrabberForTime(1, 1.5));
+    	addSequential(new MoveGrabber(1));
     	addSequential(new MoveLiftToPosition(-(26 * (1 - sos) + 84 * sos)));
     	
     	
