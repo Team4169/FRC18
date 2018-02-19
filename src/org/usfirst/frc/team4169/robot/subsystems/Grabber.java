@@ -18,7 +18,9 @@ public class Grabber extends Subsystem {
 	
 	public static Spark leftGrabberMotor = new Spark(RobotMap.leftGrabberMotor);
 	public static Spark rightGrabberMotor = new Spark(RobotMap.rightGrabberMotor);
-	public static DigitalInput limitSwitch = new DigitalInput(1);
+//	public static DigitalInput grabberLimitSwitch = new DigitalInput(RobotMap.grabberLimitSwitch);
+	
+	public double slowMode = 1;
 	
 	public static enum Speed {
 		eIn, eStop, eOut;
@@ -32,18 +34,21 @@ public class Grabber extends Subsystem {
     }
     
     public void moveGrabber(Speed spd) {
-    	int speed = spd.ordinal() - 1;
-    	leftGrabberMotor.set(speed * grabberSpeed);
-    	rightGrabberMotor.set(speed * grabberSpeed);
-    }
-    public boolean isSwitchSet() {
-    	if(limitSwitch.get()) {
-    		timesPressed++;
-    	} else {
-    		timesPressed = 0;
-    	}
     	
-    	return timesPressed > executions;
+    	int speed = spd.ordinal() - 1;
+    	leftGrabberMotor.set(speed * grabberSpeed * slowMode);
+    	rightGrabberMotor.set(speed * grabberSpeed * slowMode);
+    	
+    	System.out.println(slowMode);
     }
+//    public boolean isSwitchSet() {
+//    	if(limitSwitch.get()) {
+//    		timesPressed++;
+//    	} else {
+//    		timesPressed = 0;
+//    	}
+//    	
+//    	return timesPressed > executions;
+//    }
 }
 
