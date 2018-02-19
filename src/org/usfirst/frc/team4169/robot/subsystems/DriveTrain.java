@@ -53,6 +53,8 @@ public class DriveTrain extends Subsystem {
 	
 	static DifferentialDrive drive = new DifferentialDrive(left, right);
 	
+	public double slowMode = 1;
+	
 	public DriveTrain() {
     	rightFrontMotor.setInverted(true);
     	rightBackMotor.setInverted(true);
@@ -121,8 +123,8 @@ public class DriveTrain extends Subsystem {
     
     //drives the robot using controller values
     public void drive() {
-    		double leftY = -OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
-    		double rightY = -OI.getInstance().controller.getY(GenericHID.Hand.kRight);
+    		double leftY = -OI.getInstance().controller.getY(GenericHID.Hand.kLeft) * slowMode;
+    		double rightY = -OI.getInstance().controller.getY(GenericHID.Hand.kRight) * slowMode;
     		
     		if (Math.abs(leftY) < 0.2) {
     			leftY = 0;
@@ -130,11 +132,6 @@ public class DriveTrain extends Subsystem {
     		
     		if (Math.abs(rightY) < 0.2) {
     			rightY = 0;
-    		}
-    		
-    		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
-    			leftY = leftY / 2;
-    			rightY = rightY / 2;
     		}
     		
     		drive.tankDrive(leftY, rightY);

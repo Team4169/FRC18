@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4169.robot.subsystems;
 
+import org.usfirst.frc.team4169.robot.OI;
 import org.usfirst.frc.team4169.robot.RobotMap;
 import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
@@ -8,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,7 +26,14 @@ public class Lift extends Subsystem {
 		    liftkD = 0;
 	static final int kSlotIdx = 0;
 	
+	public double slowMode = 1;
+	
+	static WPI_TalonSRX liftMotor = new WPI_TalonSRX(RobotMap.liftMotor);
+	public static DigitalInput liftLimitSwitch = new DigitalInput(RobotMap.liftLimitSwitch);
+	
 	public Lift() {
+		
+		
 		double kF = SmartDashboard.getNumber("liftkF", 0);
 		double kP = SmartDashboard.getNumber("liftkP", 0);
 		double kI = SmartDashboard.getNumber("liftkI", 0);
@@ -60,7 +69,7 @@ public class Lift extends Subsystem {
 		
 	
 	}
-	static WPI_TalonSRX liftMotor = new WPI_TalonSRX(RobotMap.liftMotor);
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -69,13 +78,33 @@ public class Lift extends Subsystem {
     }
     
     public void moveLift(int speed) {
-    	if (speed == 1) {
-    		liftMotor.set(liftSpeed);
-    	} else if (speed == -1) {
-    		liftMotor.set(liftSpeed);
-    	} else {
-    		liftMotor.set(0);
+    	
+    	if(OI.getInstance().controller.getYButton()) {
+    		if (speed == 1) {
+        		liftMotor.set(liftSpeed / 2);
+        	} else if (speed == -1) {
+        		liftMotor.set(liftSpeed / 2);
+        	} else {
+        		liftMotor.set(0);
+        	}
     	}
+    	
+    	else {
+    		if (speed == 1) {
+        		liftMotor.set(liftSpeed);
+        	} else if (speed == -1) {
+        		liftMotor.set(liftSpeed);
+        	} else {
+        		liftMotor.set(0);
+        	}
+    	if(liftLimitSwitch.get() == true) {
+    		liftMotor.set(0);
+    		}
+    	}
+    	
+    	
+    	
+    	
     }
     public void moveLiftToPosition(double inches){
     	liftMotor.set(ControlMode.MotionMagic, 8640*inches/Math.PI);

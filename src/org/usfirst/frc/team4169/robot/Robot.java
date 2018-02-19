@@ -57,6 +57,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Drive Train", kDriveTrain);
 		
 		SmartDashboard.putNumber("slot", 1);
+		SmartDashboard.putNumber("slowModeValue", 0.5);
+
 		SmartDashboard.putNumber("dir1", 1);
 		SmartDashboard.putNumber("sos1", 1);
 		SmartDashboard.putNumber("delay1", 1);
