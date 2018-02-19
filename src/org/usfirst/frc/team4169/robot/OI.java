@@ -10,6 +10,7 @@ package org.usfirst.frc.team4169.robot;
 import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
 import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 import org.usfirst.frc.team4169.robot.commands.MoveLift;
+import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -31,18 +32,13 @@ public class OI {
 	
 	public XboxController controller = new XboxController(0);
 	private JoystickButton AButton = new JoystickButton(controller, 1);
-	private JoystickButton BButton = new JoystickButton(controller, 2);
-	private JoystickButton XButton = new JoystickButton(controller, 3);
-	private JoystickButton YButton = new JoystickButton(controller, 4);
 	private JoystickButton rB = new JoystickButton(controller, 6);
+	private JoystickButton lB = new JoystickButton(controller, 5);
 	
 	public OI(){
-		AButton.whenActive(new MoveLift());
-		BButton.whenActive(new MoveLift());
-		XButton.whenActive(new MoveGrabber());
-		YButton.whenActive(new MoveGrabber());
-
-		rB.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
+		AButton.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
+		rB.whenPressed(new MoveGrabber(Grabber.Speed.eOut));
+		lB.whenPressed(new MoveGrabber(Grabber.Speed.eIn));
 	}
 	
 	public static OI getInstance() {
