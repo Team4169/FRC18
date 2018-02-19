@@ -55,6 +55,28 @@ public class Robot extends TimedRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData("Drive Train", kDriveTrain);
+		
+		SmartDashboard.putNumber("slot1", 1);
+		SmartDashboard.putNumber("dir1", 1);
+		SmartDashboard.putNumber("sos1", 1);
+		SmartDashboard.putNumber("delay1", 1);
+		
+		SmartDashboard.putNumber("slot2", 1);
+		SmartDashboard.putNumber("dir2", 1);
+		SmartDashboard.putNumber("sos2", 1);
+		SmartDashboard.putNumber("delay2", 1);
+		
+		SmartDashboard.putNumber("slot3", 1);
+		SmartDashboard.putNumber("dir3", 1);
+		SmartDashboard.putNumber("sos3", 1);
+		SmartDashboard.putNumber("delay3", 1);
+		
+		SmartDashboard.putNumber("slot4", 1);
+		SmartDashboard.putNumber("dir4", 1);
+		SmartDashboard.putNumber("sos4", 1);
+		SmartDashboard.putNumber("delay4", 1);
+		
+		
 		limelight.setLedMode(Limelight.LightMode.eOff);
 		try {
 			Thread.sleep(22500);
@@ -176,6 +198,7 @@ public class Robot extends TimedRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
+
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
