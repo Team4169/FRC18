@@ -24,6 +24,7 @@ import org.usfirst.frc.team4169.robot.RobotMap;
 
 public class DriveTrain extends Subsystem {
 	StringBuilder sb = new StringBuilder();
+	public double angle = Math.PI / 2;
 	static final double leftkF = 1.02,
 			leftkP = 1.2,
 			leftkI = 0.004,

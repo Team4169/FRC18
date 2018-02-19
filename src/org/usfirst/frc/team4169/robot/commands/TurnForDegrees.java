@@ -12,6 +12,7 @@ public class TurnForDegrees extends Command {
     public TurnForDegrees(double value) {
         requires(Robot.kDriveTrain);
         degrees = value;
+        Robot.kDriveTrain.angle += degrees * 180 / Math.PI;
     }
 
     // Called just before this Command runs the first time

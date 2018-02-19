@@ -56,22 +56,19 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData("Drive Train", kDriveTrain);
 		
-		SmartDashboard.putNumber("slot1", 1);
+		SmartDashboard.putNumber("slot", 1);
 		SmartDashboard.putNumber("dir1", 1);
 		SmartDashboard.putNumber("sos1", 1);
 		SmartDashboard.putNumber("delay1", 1);
 		
-		SmartDashboard.putNumber("slot2", 1);
 		SmartDashboard.putNumber("dir2", 1);
 		SmartDashboard.putNumber("sos2", 1);
 		SmartDashboard.putNumber("delay2", 1);
 		
-		SmartDashboard.putNumber("slot3", 1);
 		SmartDashboard.putNumber("dir3", 1);
 		SmartDashboard.putNumber("sos3", 1);
 		SmartDashboard.putNumber("delay3", 1);
 		
-		SmartDashboard.putNumber("slot4", 1);
 		SmartDashboard.putNumber("dir4", 1);
 		SmartDashboard.putNumber("sos4", 1);
 		SmartDashboard.putNumber("delay4", 1);
@@ -117,76 +114,82 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		if (gameData.length() > 0) {
-			char swi = gameData.charAt(0);
-			char sca = gameData.charAt(1);
-			int slot = (int)SmartDashboard.getNumber("slot", 1);
-			double emptyArr[] = {};
-			
-			double doubles1[] = SmartDashboard.getNumberArray("pointList1", emptyArr);
-			int arr1[] = new int[doubles1.length];
-			for (int i = 0; i < doubles1.length; i++) {
-				arr1[i] = (int)doubles1[i];
-			}
-			double doubles2[] = SmartDashboard.getNumberArray("pointList2", emptyArr);
-			int arr2[] = new int[doubles2.length];
-			for (int i = 0; i < doubles2.length; i++) {
-				arr2[i] = (int)doubles2[i];
-			}
-			double doubles3[] = SmartDashboard.getNumberArray("pointList3", emptyArr);
-			int arr3[] = new int[doubles3.length];
-			for (int i = 0; i < doubles3.length; i++) {
-				arr3[i] = (int)doubles3[i];
-			}
-			double doubles4[] = SmartDashboard.getNumberArray("pointList4", emptyArr);
-			int arr4[] = new int[doubles4.length];
-			for (int i = 0; i < doubles4.length; i++) {
-				arr4[i] = (int)doubles4[i];
-			}
-			
-			if (swi == 'L') {
-				if (sca == 'L') {
-					if (SmartDashboard.getBoolean("list?1", true)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr1, SmartDashboard.getNumber("delay1", 0));
-					} else {
-						if ((int)SmartDashboard.getNumber("sos1", 0) == 0) {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 0);
-						} else {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 1);
-						}
-					}
+		String gameData = "";
+		while (gameData.length() == 0) {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
+		
+		char swi = gameData.charAt(0);
+		char sca = gameData.charAt(1);
+		int slot = (int)SmartDashboard.getNumber("slot", 1);
+		Vec2d start = Vec2d.startingPositions[slot - 1];
+		
+		double emptyArr[] = {};
+		
+		double doubles1[] = SmartDashboard.getNumberArray("pointList1", emptyArr);
+		int arr1[] = new int[doubles1.length];
+		for (int i = 0; i < doubles1.length; i++) {
+			arr1[i] = (int)doubles1[i];
+		}
+		double doubles2[] = SmartDashboard.getNumberArray("pointList2", emptyArr);
+		int arr2[] = new int[doubles2.length];
+		for (int i = 0; i < doubles2.length; i++) {
+			arr2[i] = (int)doubles2[i];
+		}
+		double doubles3[] = SmartDashboard.getNumberArray("pointList3", emptyArr);
+		int arr3[] = new int[doubles3.length];
+		for (int i = 0; i < doubles3.length; i++) {
+			arr3[i] = (int)doubles3[i];
+		}
+		double doubles4[] = SmartDashboard.getNumberArray("pointList4", emptyArr);
+		int arr4[] = new int[doubles4.length];
+		for (int i = 0; i < doubles4.length; i++) {
+			arr4[i] = (int)doubles4[i];
+		}
+		
+		if (swi == 'L') {
+			if (sca == 'L') {
+				if (SmartDashboard.getNumber("sos1", 2) == 2) {
+					m_autonomousCommand = new DriveToListOfPoints(start, arr1, SmartDashboard.getNumber("delay1", 0));
 				} else {
-					if (SmartDashboard.getBoolean("list?2", true)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr2, SmartDashboard.getNumber("delay2", 0));
+					if ((int)SmartDashboard.getNumber("sos1", 0) == 0) {
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 0);
 					} else {
-						if ((int)SmartDashboard.getNumber("sos2", 0) == 0) {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 0);
-						} else {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 1);
-						}
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 1);
 					}
 				}
 			} else {
-				if (sca == 'L') {
-					if (SmartDashboard.getBoolean("list?3", true)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr3, SmartDashboard.getNumber("delay3", 0));
-					} else {
-						if ((int)SmartDashboard.getNumber("sos3", 0) == 0) {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 0);
-						} else {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 1);
-						}
-					}
+				if (SmartDashboard.getNumber("sos2", 2) == 2) {
+					m_autonomousCommand = new DriveToListOfPoints(start, arr2, SmartDashboard.getNumber("delay2", 0));
 				} else {
-					if (SmartDashboard.getBoolean("list?4", true)) {
-						m_autonomousCommand = new DriveToListOfPoints(slot, arr4, SmartDashboard.getNumber("delay4", 0));
+					if ((int)SmartDashboard.getNumber("sos2", 0) == 0) {
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 0);
 					} else {
-						if ((int)SmartDashboard.getNumber("sos4", 0) == 0) {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 0);
-						} else {
-							m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 1);
-						}
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 1);
+					}
+				}
+			}
+		} else {
+			if (sca == 'L') {
+				if (SmartDashboard.getNumber("sos3", 2) == 2) {
+					m_autonomousCommand = new DriveToListOfPoints(start, arr3, SmartDashboard.getNumber("delay3", 0));
+				} else {
+					if ((int)SmartDashboard.getNumber("sos3", 0) == 0) {
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 0);
+					} else {
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 1);
+					}
+				}
+			} else {
+				if (SmartDashboard.getNumber("sos4", 2) == 2) {
+					m_autonomousCommand = new DriveToListOfPoints(start, arr4, SmartDashboard.getNumber("delay4", 0));
+				} else if (SmartDashboard.getNumber("sos4", 2) == 2) {
+					
+				} else {
+					if ((int)SmartDashboard.getNumber("sos4", 0) == 0) {
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 0);
+					} else {
+						m_autonomousCommand = new AutoCommand(slot, (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 1);
 					}
 				}
 			}
@@ -212,6 +215,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Angle", kDriveTrain.angle);
 	}
 
 	@Override
