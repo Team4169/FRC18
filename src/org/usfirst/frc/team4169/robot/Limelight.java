@@ -1,7 +1,10 @@
 package org.usfirst.frc.team4169.robot;
 
+import org.usfirst.frc.team4169.robot.commands.TurnForDegrees;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Wrapper class for getting and setting Limelight NetworkTable values.
@@ -10,7 +13,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Limelight {
 	private static NetworkTableInstance table = null;
-
+	double mountingAngle = 0;
+	double mountingHeight = 0;
+	double targetHeight = 5.5;
 	/**
 	 * Light modes for Limelight.
 	 * 
@@ -82,7 +87,17 @@ public class Limelight {
 	public double getTl() {
 		return getValue("tl").getDouble(0.00);
 	}
-
+	
+	public void findCube() {
+		Timer timer = new Timer();
+		while(!isTarget()){
+			new TurnForDegrees(1);
+		}
+	}
+	
+	public double getDist() {
+		return (targetHeight-mountingHeight)/Math.tan(getValue("ty").getDouble(0.00)+mountingAngle);
+	}
 	/**
 	 * Sets LED mode of Limelight.
 	 * 

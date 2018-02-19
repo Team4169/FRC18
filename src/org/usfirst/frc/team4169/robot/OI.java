@@ -9,7 +9,7 @@ package org.usfirst.frc.team4169.robot;
 
 import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
 import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
-import org.usfirst.frc.team4169.robot.commands.MoveLift;
+
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.XboxController;
