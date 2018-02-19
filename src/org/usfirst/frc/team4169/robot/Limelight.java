@@ -4,7 +4,6 @@ import org.usfirst.frc.team4169.robot.commands.TurnForDegrees;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Wrapper class for getting and setting Limelight NetworkTable values.
@@ -89,7 +88,6 @@ public class Limelight {
 	}
 	
 	public void findCube() {
-		Timer timer = new Timer();
 		while(!isTarget()){
 			new TurnForDegrees(1);
 		}
