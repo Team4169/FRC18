@@ -59,6 +59,28 @@ public class Robot extends TimedRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 		SmartDashboard.putData("Drive Train", kDriveTrain);
+		
+		SmartDashboard.putNumber("slot1", 1);
+		SmartDashboard.putNumber("dir1", 1);
+		SmartDashboard.putNumber("sos1", 1);
+		SmartDashboard.putNumber("delay1", 1);
+		
+		SmartDashboard.putNumber("slot2", 1);
+		SmartDashboard.putNumber("dir2", 1);
+		SmartDashboard.putNumber("sos2", 1);
+		SmartDashboard.putNumber("delay2", 1);
+		
+		SmartDashboard.putNumber("slot3", 1);
+		SmartDashboard.putNumber("dir3", 1);
+		SmartDashboard.putNumber("sos3", 1);
+		SmartDashboard.putNumber("delay3", 1);
+		
+		SmartDashboard.putNumber("slot4", 1);
+		SmartDashboard.putNumber("dir4", 1);
+		SmartDashboard.putNumber("sos4", 1);
+		SmartDashboard.putNumber("delay4", 1);
+		
+		
 		limelight.setLedMode(Limelight.LightMode.eOff);
 		try {
 			Thread.sleep(22500);
@@ -111,12 +133,14 @@ public class Robot extends TimedRobot {
 					} else {
 						m_autonomousCommand1 = new AutoCommand((int)SmartDashboard.getNumber("slot1", 1), (int)SmartDashboard.getNumber("dir1", 1), (int)SmartDashboard.getNumber("sos1", 1), SmartDashboard.getNumber("delay1", 1), 1);
 					}
+					m_autonomousCommand = m_autonomousCommand1;
 				} else {
 					if ((int)SmartDashboard.getNumber("sos2", 0) == 0) {
 						m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 0);
 					} else {
 						m_autonomousCommand2 = new AutoCommand((int)SmartDashboard.getNumber("slot2", 1), (int)SmartDashboard.getNumber("dir2", 1), (int)SmartDashboard.getNumber("sos2", 1), SmartDashboard.getNumber("delay2", 1), 1);
 					}
+					m_autonomousCommand = m_autonomousCommand2;
 				}
 			} else {
 				if (sca == 'L') {
@@ -125,12 +149,14 @@ public class Robot extends TimedRobot {
 					} else {
 						m_autonomousCommand3 = new AutoCommand((int)SmartDashboard.getNumber("slot3", 1), (int)SmartDashboard.getNumber("dir3", 1), (int)SmartDashboard.getNumber("sos3", 1), SmartDashboard.getNumber("delay3", 1), 1);
 					}
+					m_autonomousCommand = m_autonomousCommand3;
 				} else {
 					if ((int)SmartDashboard.getNumber("sos4", 0) == 0) {
 						m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 0);
 					} else {
 						m_autonomousCommand4 = new AutoCommand((int)SmartDashboard.getNumber("slot4", 1), (int)SmartDashboard.getNumber("dir4", 1), (int)SmartDashboard.getNumber("sos4", 1), SmartDashboard.getNumber("delay4", 1), 1);
 					}
+					m_autonomousCommand = m_autonomousCommand4;
 				}
 			}
 		}
@@ -142,7 +168,11 @@ public class Robot extends TimedRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
+		// schedule the autonomous command
+		
+		if(m_autonomousCommand != null) {
+			m_autonomousCommand.start();
+		}
 	}
 
 	/**
@@ -159,17 +189,8 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand1 != null) {
-			m_autonomousCommand1.cancel();
-		}
-		if (m_autonomousCommand2 != null) {
-			m_autonomousCommand2.cancel();
-		}
-		if (m_autonomousCommand3 != null) {
-			m_autonomousCommand3.cancel();
-		}
-		if (m_autonomousCommand4 != null) {
-			m_autonomousCommand4.cancel();
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.cancel();
 		}
 		
 		limelight.setLedMode(Limelight.LightMode.eBlink);
