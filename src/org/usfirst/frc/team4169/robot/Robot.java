@@ -75,6 +75,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("sos4", 1);
 		SmartDashboard.putNumber("delay4", 1);
 		
+		double emptyArr[] = {};
+		SmartDashboard.putNumberArray("pointList1", emptyArr);
+		SmartDashboard.putNumberArray("pointList2", emptyArr);
+		SmartDashboard.putNumberArray("pointList3", emptyArr);
+		SmartDashboard.putNumberArray("pointList4", emptyArr);
 		
 		limelight.setLedMode(Limelight.LightMode.eOff);
 		try {

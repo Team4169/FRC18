@@ -2,7 +2,6 @@ package org.usfirst.frc.team4169.robot.subsystems;
 
 import org.usfirst.frc.team4169.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Grabber extends Subsystem {
 
-	static final double grabberSpeed = SmartDashboard.getNumber("Grabber Speed", 0.5);
+	static final double grabberSpeed = SmartDashboard.getNumber("Grabber Speed", 1.0);
 	static final double executions = 20;
 	int timesPressed = 0;
 	
@@ -34,7 +33,6 @@ public class Grabber extends Subsystem {
     }
     
     public void moveGrabber(Speed spd) {
-    	
     	int speed = spd.ordinal() - 1;
     	leftGrabberMotor.set(speed * grabberSpeed * slowMode);
     	rightGrabberMotor.set(speed * grabberSpeed * slowMode);

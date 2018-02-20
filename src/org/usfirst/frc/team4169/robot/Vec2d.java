@@ -17,7 +17,7 @@ public class Vec2d {
 	//		11					  12					 13					   14
 			makeCart(32.69, 324), makeCart(290.69, 324), makeCart(51.32, 324), makeCart(272.06, 324),
 	//		15					   16					 17
-			makeCart(161.69, 232), makeCart(125.69, 60), makeCart(125.69, 17.25)};
+			makeCart(161.69, 232), makeCart(125.69, 60), makeCart(125.69, 33)};
     public double x;
     public double y;
     /**
