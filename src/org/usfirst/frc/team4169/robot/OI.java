@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4169.robot;
 
+import org.usfirst.frc.team4169.robot.commands.AutoCubePickup;
 import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
 import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 
@@ -33,12 +34,14 @@ public class OI {
 	
 	public XboxController controller = new XboxController(0);
 	private JoystickButton AButton = new JoystickButton(controller, 1);
+	private JoystickButton BButton = new JoystickButton(controller, 2);
 	private JoystickButton XButton = new JoystickButton(controller, 3);
 	private JoystickButton lB = new JoystickButton(controller, 5);
 	private JoystickButton rB = new JoystickButton(controller, 6);
 	
 	public OI(){
 		AButton.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
+		BButton.whenPressed(new AutoCubePickup());
 		rB.whenPressed(new MoveGrabber(Grabber.Speed.eOut));
 		lB.whenPressed(new MoveGrabber(Grabber.Speed.eIn));
 		XButton.whenPressed(new SlowMode());

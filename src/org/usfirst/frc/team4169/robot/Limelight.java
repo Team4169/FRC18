@@ -12,9 +12,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Limelight {
 	private static NetworkTableInstance table = null;
-	double mountingAngle = 0;
-	double mountingHeight = 0;
-	double targetHeight = 5.5;
+	static final double mountingAngle = 0;
+	static final double mountingHeight = 3;
+	static final double targetHeight = 5.5;
 	/**
 	 * Light modes for Limelight.
 	 * 
@@ -89,12 +89,12 @@ public class Limelight {
 	
 	public void findCube() {
 		while(!isTarget()){
-			new TurnForDegrees(1);
+			new TurnForDegrees(5);
 		}
 	}
 	
 	public double getDist() {
-		return (targetHeight-mountingHeight)/Math.tan(getValue("ty").getDouble(0.00)+mountingAngle);
+		return (targetHeight-mountingHeight)/Math.tan(getTy()+mountingAngle);
 	}
 	/**
 	 * Sets LED mode of Limelight.
