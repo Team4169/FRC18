@@ -82,12 +82,6 @@ public class Lift extends Subsystem {
         } else if (dir.ordinal() == 0) {
         	liftMotor.set(-liftSpeed);
         }
-    	
-    	if(limitSwitch.get() == true) {
-    		atTop = true;
-    	} else {
-    		atTop = false;
-    	}
     }
     
     public double getLiftPosition() {

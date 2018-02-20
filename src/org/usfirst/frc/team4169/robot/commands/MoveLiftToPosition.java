@@ -26,6 +26,10 @@ public class MoveLiftToPosition extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	if (Robot.kLift.atTop) {
+    		Robot.kLift.moveLiftToPosition(Robot.kLift.getLiftPosition());
+    		return true;
+    	}
     	return false;
     }
 

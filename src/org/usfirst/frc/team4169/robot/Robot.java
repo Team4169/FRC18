@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
 	public static final Limelight limelight = new Limelight();
+	private int executions = 0;
 	
 	Command m_autonomousCommand;
 	
@@ -108,7 +109,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
-		limelight.setLedMode(Limelight.LightMode.eOff);
+		
+		if (Lift.limitSwitch.get()) {
+			executions++;
+			if (executions > 10) {
+				kLift.atTop = true;
+			}
+		} else {
+			kLift.atTop = false;
+			executions = 0;
+		}
 	}
 
 	/**
@@ -226,6 +236,16 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Angle", kDriveTrain.angle);
+		
+		if (Lift.limitSwitch.get()) {
+			executions++;
+			if (executions > 10) {
+				kLift.atTop = true;
+			}
+		} else {
+			kLift.atTop = false;
+			executions = 0;
+		}
 	}
 
 	@Override
@@ -245,6 +265,15 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		if (Lift.limitSwitch.get()) {
+			executions++;
+			if (executions > 10) {
+				kLift.atTop = true;
+			}
+		} else {
+			kLift.atTop = false;
+			executions = 0;
+		}
 	}
 
 	/**
