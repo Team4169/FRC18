@@ -75,6 +75,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("sos4", 1);
 		SmartDashboard.putNumber("delay4", 1);
 		
+		SmartDashboard.putNumber("Lift Speed", 1);
+		SmartDashboard.putNumber("distanceToDrive", 120.0);
 		
 		limelight.setLedMode(Limelight.LightMode.eOff);
 		try {
@@ -229,9 +231,6 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
-		
-		limelight.setLedMode(Limelight.LightMode.eBlink);
-
 	}
 
 	/**
@@ -247,6 +246,5 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		limelight.setLedMode(Limelight.LightMode.eOn);
 	}
 }
