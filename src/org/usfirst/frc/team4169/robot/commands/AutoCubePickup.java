@@ -13,6 +13,7 @@ public class AutoCubePickup extends CommandGroup {
     public AutoCubePickup() {
     	Robot.limelight.findCube();
         addSequential(new TurnForDegrees(Robot.limelight.getTx()));
+        addSequential(new TurnForDegrees(Robot.limelight.getTx()));
         addSequential(new DriveToDistance(Robot.limelight.getDist()));
         addParallel(new MoveGrabberForTime(Grabber.Speed.eIn, 5));
         // e.g. addSequential(new Command1());
