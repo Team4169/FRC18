@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4169.robot.subsystems;
 
-import org.usfirst.frc.team4169.robot.OI;
 import org.usfirst.frc.team4169.robot.RobotMap;
 import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
@@ -19,21 +18,23 @@ public class Lift extends Subsystem {
 	static final int closedLoopErrorConstant = 15;
 	static final int velocityConstant = 5;
 	static final int kTimeoutMs = 10;
-	static final int pulsesPerInch = 8640;
+	static final double pulsesPerInch = 17280 / Math.PI;
 	static final double liftkF = 0,
 			liftkP = 0,
 			liftkI = 0,
 		    liftkD = 0;
 	static final int kSlotIdx = 0;
-	
+	public boolean atTop = false;
 	public double slowMode = 1;
 	
 	static WPI_TalonSRX liftMotor = new WPI_TalonSRX(RobotMap.liftMotor);
-	public static DigitalInput liftLimitSwitch = new DigitalInput(RobotMap.liftLimitSwitch);
+	public static DigitalInput limitSwitch = new DigitalInput(RobotMap.liftLimitSwitch);
+	
+	public static enum Direction {
+		eDown, eStop, eUp
+	}
 	
 	public Lift() {
-		
-		
 		double kF = SmartDashboard.getNumber("liftkF", 0);
 		double kP = SmartDashboard.getNumber("liftkP", 0);
 		double kI = SmartDashboard.getNumber("liftkI", 0);
@@ -66,8 +67,6 @@ public class Lift extends Subsystem {
 		liftMotor.configMotionCruiseVelocity(750, kTimeoutMs);
 		liftMotor.configMotionAcceleration(750, kTimeoutMs);		/* zero the sensor */
 		liftMotor.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
-		
-	
 	}
 
     // Put methods for controlling this subsystem
@@ -77,41 +76,26 @@ public class Lift extends Subsystem {
         setDefaultCommand(new MoveLift());
     }
     
-    public void moveLift(int speed) {
+    public void moveLift(Direction dir) {
+    	if (dir.ordinal() == 2) {
+        	liftMotor.set(liftSpeed);
+        } else if (dir.ordinal() == 0) {
+        	liftMotor.set(-liftSpeed);
+        }
     	
-    	if(OI.getInstance().controller.getYButton()) {
-    		if (speed == 1) {
-        		liftMotor.set(liftSpeed / 2);
-        	} else if (speed == -1) {
-        		liftMotor.set(liftSpeed / 2);
-        	} else {
-        		liftMotor.set(0);
-        	}
+    	if(limitSwitch.get() == true) {
+    		atTop = true;
+    	} else {
+    		atTop = false;
     	}
-    	
-    	else {
-    		if (speed == 1) {
-        		liftMotor.set(liftSpeed);
-        	} else if (speed == -1) {
-        		liftMotor.set(liftSpeed);
-        	} else {
-        		liftMotor.set(0);
-        	}
-    	if(liftLimitSwitch.get() == true) {
-    		liftMotor.set(0);
-    		}
-    	}
-    	
-    	
-    	
-    	
     }
+    
+    public double getLiftPosition() {
+    	return (double)(liftMotor.getSelectedSensorPosition(0)) / pulsesPerInch;
+    }
+    
     public void moveLiftToPosition(double inches){
-    	liftMotor.set(ControlMode.MotionMagic, 8640*inches/Math.PI);
-    }
-    public boolean checkClosedLoopError() {
-    	return Math.abs(liftMotor.getClosedLoopError(kPIDLoopIdx)) < closedLoopErrorConstant &&
-    			Math.abs(liftMotor.getSelectedSensorVelocity(kPIDLoopIdx)) < velocityConstant;
+    	liftMotor.set(ControlMode.MotionMagic, inches * pulsesPerInch);
     }
 }
 

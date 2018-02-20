@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class MoveLiftToPosition extends Command {
 	double inches;
+	
     public MoveLiftToPosition(double distance) {
         requires(Robot.kLift);
         inches = distance;
@@ -25,12 +26,11 @@ public class MoveLiftToPosition extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.kLift.checkClosedLoopError();
+    	return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.kLift.moveLift(0);
     }
 
     // Called when another command which requires one or more of the same
