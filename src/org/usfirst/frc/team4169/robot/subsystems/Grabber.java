@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Grabber extends Subsystem {
 
-	static final double grabberSpeed = SmartDashboard.getNumber("Grabber Speed", 1.0);
+	public static final double grabberSpeed = SmartDashboard.getNumber("Grabber Speed", 1.0);
 	static final double executions = 20;
 	int timesPressed = 0;
 	

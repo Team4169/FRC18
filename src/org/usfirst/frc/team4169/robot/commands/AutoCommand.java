@@ -24,13 +24,13 @@ public class AutoCommand extends CommandGroup {
 	    		if (sosDir == 0) {
 	    			int arr[] = {slot - 1, 3, 5, 7};
 	    			addSequential(new DriveToListOfPoints(start, arr, 0));
-	    			addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	    			addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	    			addSequential(new DriveToDistance(-1 * Vec2d.points[7].sub(Vec2d.points[5]).getR()));
 	    			addSequential(new DriveToPoint(Vec2d.points[5], Vec2d.points[9]));
 	    		} else {
 	    			int arr[] = {slot - 1, 3, 9, 10, 6, 8};
 	    			addSequential(new DriveToListOfPoints(start, arr, 0));
-	    			addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	    			addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	    			addSequential(new DriveToDistance(-1 * Vec2d.points[8].sub(Vec2d.points[6]).getR()));
 	    			addSequential(new DriveToPoint(Vec2d.points[6], Vec2d.points[10]));
 	    		}
@@ -39,13 +39,13 @@ public class AutoCommand extends CommandGroup {
 	    		if (sosDir == 0) {
 	    			int arr[] = {slot - 1, 3, 11, 13};
 	    			addSequential(new DriveToListOfPoints(start, arr, 0));
-	    			addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	    			addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	    			addSequential(new DriveToDistance(-1 * Vec2d.points[13].sub(Vec2d.points[11]).getR()));
 	    			addSequential(new DriveToPoint(Vec2d.points[11], Vec2d.points[9]));
 	    		} else {
 	    			int arr[] = {slot - 1, 3, 9, 10, 12, 14};
 	    			addSequential(new DriveToListOfPoints(start, arr, 0));
-	    			addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	    			addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	    			addSequential(new DriveToDistance(-1 * Vec2d.points[14].sub(Vec2d.points[12]).getR()));
 	    			addSequential(new DriveToPoint(Vec2d.points[12], Vec2d.points[10]));
 	    		}
@@ -56,13 +56,13 @@ public class AutoCommand extends CommandGroup {
 	    		if (sosDir == 0) {
 	    			int arr[] = {slot - 1, 4, 10, 9, 5, 7};
 	    			addSequential(new DriveToListOfPoints(start, arr, 0));
-	    			addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	    			addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	    			addSequential(new DriveToDistance(-1 * Vec2d.points[7].sub(Vec2d.points[5]).getR()));
 	    			addSequential(new DriveToPoint(Vec2d.points[5], Vec2d.points[9]));
 	    		} else {
 	    			int arr[] = {slot - 1, 4, 6, 8};
 	    			addSequential(new DriveToListOfPoints(start, arr, 0));
-	    			addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	    			addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	    			addSequential(new DriveToDistance(-1 * Vec2d.points[8].sub(Vec2d.points[6]).getR()));
 	    			addSequential(new DriveToPoint(Vec2d.points[6], Vec2d.points[10]));
 	    		}
@@ -71,13 +71,13 @@ public class AutoCommand extends CommandGroup {
 	   			if (sosDir == 0) {
 	   				int arr[] = {slot - 1, 4, 10, 9, 11, 13};
 	   				addSequential(new DriveToListOfPoints(start, arr, 0));
-	   				addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	   				addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	   				addSequential(new DriveToDistance(-1 * Vec2d.points[13].sub(Vec2d.points[11]).getR()));
 	   				addSequential(new DriveToPoint(Vec2d.points[11], Vec2d.points[9]));
     			} else {
 	   				int arr[] = {slot - 1, 4, 12, 14};
 	   				addSequential(new DriveToListOfPoints(start, arr, 0));
-	   				addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+	   				addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
 	   				addSequential(new DriveToDistance(-1 * Vec2d.points[14].sub(Vec2d.points[12]).getR()));
 	   				addSequential(new DriveToPoint(Vec2d.points[12], Vec2d.points[10]));
 	   			}

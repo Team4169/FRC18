@@ -2,8 +2,6 @@ package org.usfirst.frc.team4169.robot.commands;
 
 import org.usfirst.frc.team4169.robot.OI;
 import org.usfirst.frc.team4169.robot.Robot;
-import org.usfirst.frc.team4169.robot.subsystems.Lift;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class MoveLift extends Command {
-	boolean done = false;
+	boolean done;
 	
     public MoveLift() {
         requires(Robot.kLift);
@@ -19,12 +17,13 @@ public class MoveLift extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	done = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if (Math.abs(OI.getInstance().controller2.getY(GenericHID.Hand.kRight)) >= 0.15) {
-    		Robot.kLift.moveLift(OI.getInstance().controller2.getY(GenericHID.Hand.kLeft));
+    		Robot.kLift.moveLift(OI.getInstance().controller2.getY(GenericHID.Hand.kRight));
    		} else {
    			done = true;
    		}
@@ -32,7 +31,7 @@ public class MoveLift extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if (Robot.kLift.atTop) {
+    	if (Robot.kLift.atTop || done == true) {
     		return true;
     	}
         return false;

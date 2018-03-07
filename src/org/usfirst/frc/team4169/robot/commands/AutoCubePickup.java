@@ -1,8 +1,5 @@
 package org.usfirst.frc.team4169.robot.commands;
 
-import org.usfirst.frc.team4169.robot.Robot;
-import org.usfirst.frc.team4169.robot.subsystems.Grabber;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**

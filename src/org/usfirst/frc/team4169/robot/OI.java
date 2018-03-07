@@ -9,11 +9,9 @@ package org.usfirst.frc.team4169.robot;
 
 import org.usfirst.frc.team4169.robot.commands.AutoCubePickup;
 import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
-import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 
 import org.usfirst.frc.team4169.robot.commands.SlowMode;
 import org.usfirst.frc.team4169.robot.commands.SlowMode2;
-import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -32,6 +30,9 @@ public class OI {
 	// number it is.
 	// Joystick stick = new Joystick(port);
 	// Button button = new JoystickButton(stick, buttonNumber);
+	
+	//FIRST CONTROLLER PLUGGED INTO LAPTOP WILL AUTOMATICALLY BE CONTROLLER 0. THE PORT
+	//THE CONTROLLER IS PLUGGED INTO DOES NOT MATTER.
 	
 	public XboxController controller1 = new XboxController(0);
 	public XboxController controller2 = new XboxController(2);

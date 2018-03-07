@@ -25,7 +25,7 @@ public class Exchange extends CommandGroup {
         }
         
         addSequential(new DriveToListOfPoints(Vec2d.startingPositions[slot - 1], arr, 0));
-        addSequential(new MoveGrabberForTime(Grabber.Speed.eOut, 2));
+        addSequential(new MoveGrabberForTime(Grabber.grabberSpeed, 2));
         addSequential(new DriveToDistance(-1 * (Vec2d.points[17].sub(Vec2d.points[16])).getR()));
 		addSequential(new DriveToListOfPoints(Vec2d.points[16], arr2, 0));
     }

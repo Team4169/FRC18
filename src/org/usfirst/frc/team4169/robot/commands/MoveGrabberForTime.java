@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4169.robot.commands;
 import org.usfirst.frc.team4169.robot.Robot;
-import org.usfirst.frc.team4169.robot.subsystems.Grabber;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,11 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class MoveGrabberForTime extends Command {
-	Grabber.Speed speed;
+
 	double timeToRun;
 	double initTime;
+	double speed;
 	
-    public MoveGrabberForTime(Grabber.Speed spd, double seconds) {
+    public MoveGrabberForTime(double spd, double seconds) {
     	speed = spd;
     	timeToRun = seconds;
         requires(Robot.kGrabber);
@@ -36,7 +35,7 @@ public class MoveGrabberForTime extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.kGrabber.moveGrabber(Grabber.Speed.eStop);
+    	Robot.kGrabber.moveGrabber(0);
     }
 
     // Called when another command which requires one or more of the same
