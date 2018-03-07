@@ -37,10 +37,6 @@ public class Lift extends Subsystem {
 	static WPI_TalonSRX liftMotor = new WPI_TalonSRX(RobotMap.liftMotor);
 	public static DigitalInput limitSwitch = new DigitalInput(RobotMap.liftLimitSwitch);
 	
-	public static enum Direction {
-		eDown, eStop, eUp
-	}
-	
 	public Lift() {
 		double kF = SmartDashboard.getNumber("liftkF", 0);
 		double kP = SmartDashboard.getNumber("liftkP", 0);
@@ -83,12 +79,8 @@ public class Lift extends Subsystem {
         setDefaultCommand(new MoveLift());
     }
     
-    public void moveLift(Direction dir) {
-    	if (dir.ordinal() == 2) {
-        	liftMotor.set(liftSpeed);
-        } else if (dir.ordinal() == 0) {
-        	liftMotor.set(-liftSpeed);
-        }
+    public void moveLift(double speed) {
+        	liftMotor.set(speed);
     }
     
     public double getLiftPosition() {
@@ -103,8 +95,8 @@ public class Lift extends Subsystem {
     	/* get gamepad axis - forward stick is positive */
     	double targetPos = pulsesPerInch * 40.0;
     	
-		double left = OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kLeft);
-		double right = OI.getInstance().controller.getTriggerAxis(GenericHID.Hand.kRight);
+		double left = OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kLeft);
+		double right = OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kRight);
 		double spd = right - left;
 		sb.append("\tright:");
 		sb.append(right);
@@ -120,7 +112,7 @@ public class Lift extends Subsystem {
 		sb.append("\tVel:");
 		sb.append(liftMotor.getSelectedSensorVelocity(kPIDLoopIdx));
 
-		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
+		if (OI.getInstance().controller1.getBumper(GenericHID.Hand.kRight)) {
 			
 			if (!(liftMotor.getControlMode() == ControlMode.MotionMagic)) {
 				liftMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);

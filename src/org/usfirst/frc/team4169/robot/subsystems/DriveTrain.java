@@ -123,8 +123,8 @@ public class DriveTrain extends Subsystem {
     
     //drives the robot using controller values
     public void drive() {
-    		double leftY = -OI.getInstance().controller.getY(GenericHID.Hand.kLeft) * slowMode;
-    		double rightY = -OI.getInstance().controller.getY(GenericHID.Hand.kRight) * slowMode;
+    		double leftY = -OI.getInstance().controller1.getY(GenericHID.Hand.kLeft) * slowMode;
+    		double rightY = -OI.getInstance().controller1.getY(GenericHID.Hand.kRight) * slowMode;
     		
     		if (Math.abs(leftY) < 0.2) {
     			leftY = 0;
@@ -144,8 +144,8 @@ public class DriveTrain extends Subsystem {
     
     public void pidTest() {
     	/* get gamepad axis - forward stick is positive */
-		double leftYstick =	-OI.getInstance().controller.getY(GenericHID.Hand.kLeft);
-		double rightYstick = -OI.getInstance().controller.getY(GenericHID.Hand.kRight);
+		double leftYstick =	-OI.getInstance().controller1.getY(GenericHID.Hand.kLeft);
+		double rightYstick = -OI.getInstance().controller1.getY(GenericHID.Hand.kRight);
 		sb.append("\trightStick:");
 		sb.append(rightYstick);
 		sb.append("\tleftStick:");
@@ -163,7 +163,7 @@ public class DriveTrain extends Subsystem {
 		sb.append("\trightVel:");
 		sb.append(rightFrontMotor.getSelectedSensorVelocity(kPIDLoopIdx));
 
-		if (OI.getInstance().controller.getBumper(GenericHID.Hand.kLeft)) {
+		if (OI.getInstance().controller1.getBumper(GenericHID.Hand.kLeft)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
 			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;
@@ -179,7 +179,7 @@ public class DriveTrain extends Subsystem {
 			sb.append(leftFrontMotor.getClosedLoopError(kPIDLoopIdx));
 			sb.append("\ttrg:");
 			sb.append(targetPos);
-		} else if (OI.getInstance().controller.getBumper(GenericHID.Hand.kRight)) {
+		} else if (OI.getInstance().controller1.getBumper(GenericHID.Hand.kRight)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
 			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;

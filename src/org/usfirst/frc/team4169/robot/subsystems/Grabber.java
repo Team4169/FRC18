@@ -21,10 +21,6 @@ public class Grabber extends Subsystem {
 	
 	public double slowMode = 1;
 	
-	public static enum Speed {
-		eIn, eStop, eOut;
-	}
-	
 	public Grabber() {
 		leftGrabberMotor.setInverted(true);
 	}
@@ -32,8 +28,8 @@ public class Grabber extends Subsystem {
     public void initDefaultCommand() {
     }
     
-    public void moveGrabber(Speed spd) {
-    	int speed = spd.ordinal() - 1;
+    public void moveGrabber(double speed) {
+
     	leftGrabberMotor.set(speed * grabberSpeed * slowMode);
     	rightGrabberMotor.set(speed * grabberSpeed * slowMode);
     	

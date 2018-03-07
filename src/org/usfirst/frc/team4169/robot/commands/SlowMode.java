@@ -18,8 +18,7 @@ public class SlowMode extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.kDriveTrain.slowMode = 0.5;
-    	Robot.kGrabber.slowMode = 0.5;
-    	Robot.kLift.slowMode = 0.5;
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -29,14 +28,12 @@ public class SlowMode extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return OI.getInstance().controller.getYButton();
+        return OI.getInstance().controller1.getYButton();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	Robot.kDriveTrain.slowMode = 1;
-    	Robot.kGrabber.slowMode = 1;
-    	Robot.kLift.slowMode = 1;
     }
 
     // Called when another command which requires one or more of the same

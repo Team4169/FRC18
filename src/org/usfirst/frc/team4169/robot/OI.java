@@ -12,6 +12,7 @@ import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
 import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 
 import org.usfirst.frc.team4169.robot.commands.SlowMode;
+import org.usfirst.frc.team4169.robot.commands.SlowMode2;
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -32,19 +33,19 @@ public class OI {
 	// Joystick stick = new Joystick(port);
 	// Button button = new JoystickButton(stick, buttonNumber);
 	
-	public XboxController controller = new XboxController(0);
-	private JoystickButton AButton = new JoystickButton(controller, 1);
-	private JoystickButton BButton = new JoystickButton(controller, 2);
-	private JoystickButton XButton = new JoystickButton(controller, 3);
-	private JoystickButton lB = new JoystickButton(controller, 5);
-	private JoystickButton rB = new JoystickButton(controller, 6);
+	public XboxController controller1 = new XboxController(0);
+	public XboxController controller2 = new XboxController(2);
+	
+	private JoystickButton AButton1 = new JoystickButton(controller1, 1);
+	private JoystickButton BButton1 = new JoystickButton(controller1, 2);
+	private JoystickButton XButton1 = new JoystickButton(controller1, 3);
+	private JoystickButton XButton2 = new JoystickButton(controller2, 3);
 	
 	public OI(){
-		AButton.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
-		BButton.whenPressed(new AutoCubePickup());
-		rB.whenPressed(new MoveGrabber(Grabber.Speed.eOut));
-		lB.whenPressed(new MoveGrabber(Grabber.Speed.eIn));
-		XButton.whenPressed(new SlowMode());
+		AButton1.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
+		BButton1.whenPressed(new AutoCubePickup());
+		XButton1.whenPressed(new SlowMode());
+		XButton2.whenPressed(new SlowMode2());
 	}
 	
 	public static OI getInstance() {
