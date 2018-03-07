@@ -37,7 +37,7 @@ public class MoveLift extends Command {
     	if (Robot.kLift.atTop) {
     		return true;
     	}
-        return done;
+        return false;
     }
 
     // Called once after isFinished returns true

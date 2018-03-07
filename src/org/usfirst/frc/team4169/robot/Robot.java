@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 	public static final Grabber kGrabber = new Grabber();
 	public static final Lift kLift = new Lift();
 	public static OI m_oi;
-	public static final Limelight limelight = new Limelight();
+	//public static final Limelight limelight = new Limelight();
 	private int executions = 0;
 	
 	Command m_autonomousCommand;
@@ -85,15 +85,15 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Lift Speed", 1);
 		SmartDashboard.putNumber("distanceToDrive", 120.0);
 		
-		limelight.setLedMode(Limelight.LightMode.eOff);
+	//	limelight.setLedMode(Limelight.LightMode.eOff);
 		try {
 			Thread.sleep(22500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		limelight.setLedMode(Limelight.LightMode.eOn);
-		limelight.setLedMode(Limelight.LightMode.eOff);		
+	//	limelight.setLedMode(Limelight.LightMode.eOn);
+	//	limelight.setLedMode(Limelight.LightMode.eOff);		
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-		limelight.setLedMode(Limelight.LightMode.eOn);
+		//limelight.setLedMode(Limelight.LightMode.eOn);
 	}
 
 	@Override
@@ -281,5 +281,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		kLift.pidTest();
 	}
 }
