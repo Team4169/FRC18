@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4169.robot.commands;
 
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -8,11 +9,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoCubePickup extends CommandGroup {
 
     public AutoCubePickup() {
+    	
 //    	Robot.limelight.findCube();
 //        addSequential(new TurnForDegrees(Robot.limelight.getTx()));
 //        addSequential(new TurnForDegrees(Robot.limelight.getTx()));
 //        addSequential(new DriveToDistance(Robot.limelight.getDist()));
-//        addParallel(new MoveGrabberForTime(Grabber.Speed.eIn, 5));
+//        addParallel(new MoveGrabberForTime(-Grabber.grabberSpeed, 5));
+    	
+    	
+    	
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
