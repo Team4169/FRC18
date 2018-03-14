@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4169.robot.subsystems;
 
 import org.usfirst.frc.team4169.robot.RobotMap;
-import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;

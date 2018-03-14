@@ -28,6 +28,7 @@ import org.usfirst.frc.team4169.robot.RobotMap;
 public class DriveTrain extends Subsystem {
 	StringBuilder sb = new StringBuilder();
 	HashMap<String, WPI_TalonSRX> dict = new HashMap<>(); 
+	public static final double JOY_DEAD_ZONE = 0.2d;
 	public double angle = Math.PI / 2;
 	static final double leftkF = 1.02,
 			leftkP = 1.2,
@@ -37,6 +38,7 @@ public class DriveTrain extends Subsystem {
 			rightkP = 1.2,
 			rightkI = 0.004,
 			rightkD = 8.0;
+	static final double secondsForAcceleration = 0.5;
 	static final int closedLoopErrorConstant = 20;
 	static final int velocityConstant = 5;
 	static final double inchesPerCompleteTurn = 28*Math.PI;
@@ -134,6 +136,16 @@ public class DriveTrain extends Subsystem {
 		rightBackMotor.enableCurrentLimit(false);
 		leftFrontMotor.enableCurrentLimit(false);
 		leftBackMotor.enableCurrentLimit(false);
+		
+		rightFrontMotor.configOpenloopRamp(secondsForAcceleration, kTimeoutMs);
+		leftFrontMotor.configOpenloopRamp(secondsForAcceleration, kTimeoutMs);
+		rightBackMotor.configOpenloopRamp(secondsForAcceleration, kTimeoutMs);
+		leftBackMotor.configOpenloopRamp(secondsForAcceleration, kTimeoutMs);
+		
+		rightFrontMotor.configClosedloopRamp(secondsForAcceleration, kTimeoutMs);
+		leftFrontMotor.configClosedloopRamp(secondsForAcceleration, kTimeoutMs);
+		rightBackMotor.configClosedloopRamp(secondsForAcceleration, kTimeoutMs);
+		leftBackMotor.configClosedloopRamp(secondsForAcceleration, kTimeoutMs);
 	}
 	
     // Put methods f	or controlling this subsystem
@@ -161,20 +173,19 @@ public class DriveTrain extends Subsystem {
 //    		drive.tankDrive(leftY * 0.8 * slowMode, rightY * 0.93 * 0.8 * slowMode);
     	
     	
-		double speed = -OI.getInstance().controller1.getY(GenericHID.Hand.kLeft);
+    	
+    	
+    	
+		double speed = joystickToMotorPower(OI.getInstance().controller1.getY(GenericHID.Hand.kLeft));
 		double rotation = OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kRight) -
 				OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kLeft);
-		
-		if (Math.abs(speed) < 0.2) {
-			speed = 0;
-		}
 		
 		if (Math.abs(rotation) < 0.2) {
 			rotation = 0;
 		}
 		System.out.println("Speed = " + speed);
 		System.out.println("Rotation = " + rotation);
-		drive.arcadeDrive(speed * slowMode * 0.7, rotation * slowMode);
+		drive.arcadeDrive(speed * slowMode, rotation * slowMode);
 		
 		
     	
@@ -200,6 +211,20 @@ public class DriveTrain extends Subsystem {
     public void stop() {
     	drive.tankDrive(0, 0);
     	System.out.println("Stop command stopped");
+    }
+    
+    private double joystickToMotorPower(double joy) {
+    	final double slope = -1.0d/(JOY_DEAD_ZONE - 1.0d);
+    	final double intercept = 1.0d + (1.0d/JOY_DEAD_ZONE - 1.0d);
+    	
+    	double motorPower = 0.0d;
+    	joy = -joy;
+    	
+    	if(Math.abs(joy) >= JOY_DEAD_ZONE) {
+    		motorPower = (slope * joy) + intercept;
+    	}
+    	
+    	return motorPower;
     }
     
     public void pidTest() {
