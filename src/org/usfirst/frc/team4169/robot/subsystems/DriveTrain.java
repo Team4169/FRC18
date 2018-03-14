@@ -6,16 +6,19 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team4169.robot.commands.DriveWithController;
+//import org.usfirst.frc.team4169.robot.commands.DriveWithController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.usfirst.frc.team4169.robot.OI;
+//import org.usfirst.frc.team4169.robot.Robot;
 import org.usfirst.frc.team4169.robot.RobotMap;
 
 /**
@@ -24,6 +27,7 @@ import org.usfirst.frc.team4169.robot.RobotMap;
 
 public class DriveTrain extends Subsystem {
 	StringBuilder sb = new StringBuilder();
+	HashMap<String, WPI_TalonSRX> dict = new HashMap<>(); 
 	public double angle = Math.PI / 2;
 	static final double leftkF = 1.02,
 			leftkP = 1.2,
@@ -56,16 +60,26 @@ public class DriveTrain extends Subsystem {
 	public double slowMode = 1;
 	
 	public DriveTrain() {
+		dict.put("leftFront", leftFrontMotor);
+		dict.put("leftBack", leftBackMotor);
+		dict.put("rightFront", rightFrontMotor);
+		dict.put("rightBack", rightBackMotor);
+		
     	rightFrontMotor.setInverted(true);
     	rightBackMotor.setInverted(true);
 		right.setInverted(true);
 		
 		/* first choose the sensor */
 		leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
-		leftFrontMotor.setSensorPhase(false);
+		leftFrontMotor.setSensorPhase(true);
+		
+		leftFrontMotor.setNeutralMode(NeutralMode.Brake);
+		leftBackMotor.setNeutralMode(NeutralMode.Brake);
+		rightFrontMotor.setNeutralMode(NeutralMode.Brake);
+		rightBackMotor.setNeutralMode(NeutralMode.Brake);
 		
 		rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
-		rightFrontMotor.setSensorPhase(false);
+		rightFrontMotor.setSensorPhase(true);
 		
 		/* Set relevant frame periods to be at least as fast as periodic rate */
 		leftFrontMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, kTimeoutMs);
@@ -79,11 +93,16 @@ public class DriveTrain extends Subsystem {
 		leftFrontMotor.configNominalOutputReverse(0, kTimeoutMs);
 		leftFrontMotor.configPeakOutputForward(1, kTimeoutMs);
 		leftFrontMotor.configPeakOutputReverse(-1, kTimeoutMs);
+		leftBackMotor.configPeakOutputForward(1, kTimeoutMs);
+		leftBackMotor.configPeakOutputReverse(-1, kTimeoutMs);
+		
 		
 		rightFrontMotor.configNominalOutputForward(0, kTimeoutMs);
 		rightFrontMotor.configNominalOutputReverse(0, kTimeoutMs);
 		rightFrontMotor.configPeakOutputForward(1, kTimeoutMs);
 		rightFrontMotor.configPeakOutputReverse(-1, kTimeoutMs);
+		rightBackMotor.configPeakOutputForward(1, kTimeoutMs);
+		rightBackMotor.configPeakOutputReverse(-1, kTimeoutMs); 
 
 		/* set closed loop gains in slot0 - see documentation */
 		leftFrontMotor.selectProfileSlot(kSlotIdx, kPIDLoopIdx);
@@ -101,45 +120,86 @@ public class DriveTrain extends Subsystem {
 		rightFrontMotor.config_IntegralZone(0, 50, kTimeoutMs);
 		
 		/* set acceleration and vcruise velocity - see documentation */
-		leftFrontMotor.configMotionCruiseVelocity(750, kTimeoutMs);
-		leftFrontMotor.configMotionAcceleration(750, kTimeoutMs);
+		leftFrontMotor.configMotionCruiseVelocity(100, kTimeoutMs);
+		leftFrontMotor.configMotionAcceleration(50, kTimeoutMs);
 		
-		rightFrontMotor.configMotionCruiseVelocity(750, kTimeoutMs);
-		rightFrontMotor.configMotionAcceleration(750, kTimeoutMs);
+		rightFrontMotor.configMotionCruiseVelocity(100, kTimeoutMs);
+		rightFrontMotor.configMotionAcceleration(50, kTimeoutMs);
 		/* zero the sensor */
 		leftFrontMotor.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
 		
 		rightFrontMotor.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
+		
+		rightFrontMotor.enableCurrentLimit(false);
+		rightBackMotor.enableCurrentLimit(false);
+		leftFrontMotor.enableCurrentLimit(false);
+		leftBackMotor.enableCurrentLimit(false);
 	}
 	
-    // Put methods for controlling this subsystem
+    // Put methods f	or controlling this subsystem
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new DriveWithController());
+    	//setDefaultCommand(new DriveWithController());
     }
     
     //drives the robot using controller values
     public void drive() {
-    		double leftY = -OI.getInstance().controller1.getY(GenericHID.Hand.kLeft) * slowMode;
-    		double rightY = -OI.getInstance().controller1.getY(GenericHID.Hand.kRight) * slowMode;
-    		
-    		if (Math.abs(leftY) < 0.2) {
-    			leftY = 0;
-    		}
-    		
-    		if (Math.abs(rightY) < 0.2) {
-    			rightY = 0;
-    		}
-    		
-    		drive.tankDrive(leftY, rightY);
+//    		double leftY = -OI.getInstance().controller1.getY(GenericHID.Hand.kLeft);
+//    		double rightY = -OI.getInstance().controller1.getY(GenericHID.Hand.kRight);
+//    		
+//    		if (Math.abs(leftY) < 0.2) {
+//    			leftY = 0;
+//    		}
+//    		
+//    		if (Math.abs(rightY) < 0.2) {
+//    			rightY = 0;
+//    		}
+//    		
+//    		drive.tankDrive(leftY * 0.8 * slowMode, rightY * 0.93 * 0.8 * slowMode);
+    	
+    	
+		double speed = -OI.getInstance().controller1.getY(GenericHID.Hand.kLeft);
+		double rotation = OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kRight) -
+				OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kLeft);
+		
+		if (Math.abs(speed) < 0.2) {
+			speed = 0;
+		}
+		
+		if (Math.abs(rotation) < 0.2) {
+			rotation = 0;
+		}
+		System.out.println("Speed = " + speed);
+		System.out.println("Rotation = " + rotation);
+		drive.arcadeDrive(speed * slowMode * 0.7, rotation * slowMode);
+		
+		
+    	
+//    		StringBuilder sb = new StringBuilder();
+//        	sb.append("\tleftOut:");
+//        	sb.append(leftFrontMotor.getMotorOutputVoltage());
+//        	sb.append("\trightOut:");
+//        	sb.append(rightFrontMotor.getMotorOutputVoltage());
+//        	sb.append("\tleftVel:");
+//        	sb.append(leftFrontMotor.getSelectedSensorVelocity(kSlotIdx));
+//        	sb.append("\trightVel:");
+//        	sb.append(rightFrontMotor.getSelectedSensorVelocity(kSlotIdx));
+//        	sb.append("\tleftCount");
+//        	sb.append(leftFrontMotor.getSelectedSensorPosition(kSlotIdx));
+//        	sb.append("\trightCount");
+//        	sb.append(rightFrontMotor.getSelectedSensorPosition(kSlotIdx));
+//        	System.out.println(sb.toString());
+        	
+        	
     }
     
     //stops the robot
     public void stop() {
-    	//drive.tankDrive(0, 0);
+    	drive.tankDrive(0, 0);
+    	System.out.println("Stop command stopped");
     }
     
     public void pidTest() {
@@ -243,11 +303,16 @@ public class DriveTrain extends Subsystem {
     public void driveForDistance(double distance) {
     	rightFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
     	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
-    	System.out.println("In DriveForDistance: " + distance);
     	leftFrontMotor.set(ControlMode.MotionMagic, distance);
     	leftBackMotor.follow(leftFrontMotor);
-    	rightFrontMotor.set(ControlMode.MotionMagic, distance);
-    	rightBackMotor.follow(leftFrontMotor);
+    	rightFrontMotor.follow(leftFrontMotor);
+    	rightBackMotor.follow(rightFrontMotor);
+    	
+//    	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
+//    	leftFrontMotor.set(ControlMode.MotionMagic, distance);
+//    	leftBackMotor.follow(leftFrontMotor);
+//    	rightFrontMotor.follow(leftFrontMotor);
+//    	rightBackMotor.follow(leftFrontMotor);
     }
 
     public void turnForDegrees(double degrees){
@@ -260,23 +325,30 @@ public class DriveTrain extends Subsystem {
     	leftBackMotor.follow(leftFrontMotor);
     }
     
-    public boolean checkClosedLoopError() {
-    	return Math.abs(leftFrontMotor.getSelectedSensorPosition(kSlotIdx) - leftFrontMotor.getClosedLoopTarget(kPIDLoopIdx)) < closedLoopErrorConstant &&
-    			Math.abs(rightFrontMotor.getSelectedSensorPosition(kSlotIdx) - rightFrontMotor.getClosedLoopTarget(kPIDLoopIdx)) < closedLoopErrorConstant &&
-    			Math.abs(leftFrontMotor.getSelectedSensorVelocity(kPIDLoopIdx)) < velocityConstant;
+    public boolean checkClosedLoopError(WPI_TalonSRX tal) {
+    	return Math.abs(tal.getSelectedSensorPosition(kSlotIdx) - tal.getClosedLoopTarget(kPIDLoopIdx)) < closedLoopErrorConstant &&
+    			Math.abs(tal.getSelectedSensorVelocity(kPIDLoopIdx)) < velocityConstant;
     }
     
     public void driveSafetyEnabled(boolean foo) {
     	drive.setSafetyEnabled(foo);
     }
     
+    public WPI_TalonSRX getMotor(String key) {
+    	return dict.get(key);
+    }
+    
     public void speedTest() {
-    	drive.tankDrive(1, 1);
+    	drive.tankDrive(1, 1*.93);
     	StringBuilder sb = new StringBuilder();
+    	sb.append("\tleftOut:");
+    	sb.append(leftFrontMotor.getMotorOutputPercent());
+    	sb.append("\trightOut:");
+    	sb.append(rightFrontMotor.getMotorOutputPercent());
     	sb.append("\tleftVel:");
     	sb.append(leftFrontMotor.getSelectedSensorVelocity(kSlotIdx));
     	sb.append("\trightVel:");
-    	sb.append(rightFrontMotor.getSelectedSensorPosition(kSlotIdx));
+    	sb.append(rightFrontMotor.getSelectedSensorVelocity(kSlotIdx));
     	sb.append("\tleftCount");
     	sb.append(leftFrontMotor.getSelectedSensorPosition(kSlotIdx));
     	sb.append("\trightCount");

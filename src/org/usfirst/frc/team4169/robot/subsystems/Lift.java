@@ -8,10 +8,11 @@ import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,20 +29,21 @@ public class Lift extends Subsystem {
 			liftkI = 0,
 		    liftkD = 0;
 	static final int kSlotIdx = 0;
-	public boolean atTop = false;
 	public double slowMode = 1;
 	StringBuilder sb = new StringBuilder();
 	static int _timesInMotionMagic = 0;
 	static int _loops = 0;
 	
 	static WPI_TalonSRX liftMotor = new WPI_TalonSRX(RobotMap.liftMotor);
-	public static DigitalInput limitSwitch = new DigitalInput(RobotMap.liftLimitSwitch);
 	
 	public Lift() {
 		double kF = SmartDashboard.getNumber("liftkF", 0);
 		double kP = SmartDashboard.getNumber("liftkP", 0);
 		double kI = SmartDashboard.getNumber("liftkI", 0);
 		double kD = SmartDashboard.getNumber("liftkD", 0);
+		
+		liftMotor.setInverted(true);
+		liftMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, kTimeoutMs);
 		
 		liftMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
 		liftMotor.setSensorPhase(false);
@@ -80,7 +82,7 @@ public class Lift extends Subsystem {
     }
     
     public void moveLift(double speed) {
-        	liftMotor.set(speed);
+        liftMotor.set(speed);
     }
     
     public double getLiftPosition() {
@@ -127,10 +129,6 @@ public class Lift extends Subsystem {
     	} else {
 			/* Percent voltage mode */
 			liftMotor.set(ControlMode.PercentOutput, spd);
-		}
-		
-		if (atTop && (spd > 0 || targetPos / pulsesPerInch > getLiftPosition())) {
-			moveLiftToPosition(getLiftPosition());
 		}
 		
 		/* instrumentation */

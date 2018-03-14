@@ -17,22 +17,34 @@ public class DriveToDistance extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.kDriveTrain.driveSafetyEnabled(false);
     	Robot.kDriveTrain.driveForDistance(pulses);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	StringBuilder sb = new StringBuilder();
+    	boolean left = Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("leftFront"));
+//    	boolean right = Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("rightFront"));
+    	if (left) {
+    		sb.append("left done.");
+    	}
+    	
+//    	if (right) {
+//    		sb.append("right done.");
+//    	}
+    	
+    	System.out.print(sb);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.kDriveTrain.checkClosedLoopError();
+        return Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("leftFront")); //&& 
+        		//Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("rightFront"));
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.kDriveTrain.driveSafetyEnabled(true);
+    	System.out.println("DriveToDistance is finished");
     	Robot.kDriveTrain.stop();
     }
 

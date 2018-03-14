@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4169.robot.subsystems;
 
 import org.usfirst.frc.team4169.robot.RobotMap;
+import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -26,6 +27,7 @@ public class Grabber extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
+    	setDefaultCommand(new MoveGrabber());
     }
     
     public void moveGrabber(double speed) {
@@ -33,7 +35,6 @@ public class Grabber extends Subsystem {
     	leftGrabberMotor.set(speed * grabberSpeed * slowMode);
     	rightGrabberMotor.set(speed * grabberSpeed * slowMode);
     	
-    	System.out.println(slowMode);
     }
 //    public boolean isSwitchSet() {
 //    	if(limitSwitch.get()) {

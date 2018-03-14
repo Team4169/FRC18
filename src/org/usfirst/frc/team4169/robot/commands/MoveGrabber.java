@@ -10,35 +10,31 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class MoveGrabber extends Command {
-	boolean done;
 	
     public MoveGrabber() {
         requires(Robot.kGrabber);
-        
-        
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	done = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.15) {
-    		Robot.kGrabber.moveGrabber(-OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kLeft));
-    		
-    	} else if (OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kRight) >= 0.15) {
-    		Robot.kGrabber.moveGrabber(OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kRight)); 
-    		
+    	double left = OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kLeft);
+    	double right = OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kRight);
+    	if (left >= 0.15) {
+    		Robot.kGrabber.moveGrabber(-left);
+    	} else if (right >= 0.15) {
+    		Robot.kGrabber.moveGrabber(right); 
     	} else {
-   			done = true;
-   		}
+    		Robot.kGrabber.moveGrabber(0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return done;
+    	return false;
     }
 
     // Called once after isFinished returns true

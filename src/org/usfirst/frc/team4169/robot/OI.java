@@ -8,14 +8,14 @@
 package org.usfirst.frc.team4169.robot;
 
 import org.usfirst.frc.team4169.robot.commands.AutoCubePickup;
-import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
+//import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
 
 import org.usfirst.frc.team4169.robot.commands.SlowMode;
 import org.usfirst.frc.team4169.robot.commands.SlowMode2;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -35,15 +35,15 @@ public class OI {
 	//THE CONTROLLER IS PLUGGED INTO DOES NOT MATTER.
 	
 	public XboxController controller1 = new XboxController(0);
-	public XboxController controller2 = new XboxController(2);
+	public XboxController controller2 = new XboxController(1);
 	
-	private JoystickButton AButton1 = new JoystickButton(controller1, 1);
+	//private JoystickButton AButton1 = new JoystickButton(controller1, 1);
 	private JoystickButton BButton1 = new JoystickButton(controller1, 2);
 	private JoystickButton XButton1 = new JoystickButton(controller1, 3);
 	private JoystickButton XButton2 = new JoystickButton(controller2, 3);
 	
 	public OI(){
-		AButton1.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
+	//	AButton1.whenPressed(new DriveToDistance(SmartDashboard.getNumber("distanceToDrive", 120.0)));
 		BButton1.whenPressed(new AutoCubePickup());
 		XButton1.whenPressed(new SlowMode());
 		XButton2.whenPressed(new SlowMode2());
