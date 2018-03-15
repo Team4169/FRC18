@@ -116,7 +116,7 @@ public class Vec2d {
     	if(!(o instanceof Vec2d)){
     		return false;
     	}
-    	return !(((Vec2d)o).getX() == this.x && ((Vec2d)o).getY() == this.y);
+    	return ((Vec2d)o).getX() == this.x && ((Vec2d)o).getY() == this.y;
     }
     @Override
     public int hashCode(){

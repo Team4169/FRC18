@@ -7,17 +7,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TurnForDegrees extends Command {
-	double degrees;
-    public TurnForDegrees(double value) {
+public class TurnForRadians extends Command {
+	double radians;
+    public TurnForRadians(double value) {
         requires(Robot.kDriveTrain);
-        degrees = value;
-        Robot.kDriveTrain.angle += degrees * 180 / Math.PI;
+        radians = value;
+        Robot.kDriveTrain.angle += radians;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.kDriveTrain.turnForDegrees(degrees);
+    	Robot.kDriveTrain.turnForRadians(radians);
     }
 
     // Called repeatedly when this Command is scheduled to run

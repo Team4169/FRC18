@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4169.robot.subsystems;
 
 import org.usfirst.frc.team4169.robot.RobotMap;
+import org.usfirst.frc.team4169.robot.commands.MoveGrabber;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,9 +20,10 @@ public class Grabber extends Subsystem {
 	public static Spark rightGrabberMotor = new Spark(RobotMap.rightGrabberMotor);
 //	public static DigitalInput grabberLimitSwitch = new DigitalInput(RobotMap.grabberLimitSwitch);
 	
-	public double slowMode = 1;
+	double slowMode;
 	
 	public Grabber() {
+		slowMode = 1.0;
 		leftGrabberMotor.setInverted(true);
 	}
 	
@@ -44,5 +46,11 @@ public class Grabber extends Subsystem {
 //    	
 //    	return timesPressed > executions;
 //    }
+    
+    public void setSlowMode(double value) {
+    	if (value <= 1.0 && value >= 0.0) {
+    		slowMode = value;
+    	}
+    }
 }
 

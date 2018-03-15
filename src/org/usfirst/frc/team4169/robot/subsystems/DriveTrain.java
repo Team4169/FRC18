@@ -17,7 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import org.usfirst.frc.team4169.robot.OI;
+import org.usfirst.frc.team4169.robot.Robot;
 //import org.usfirst.frc.team4169.robot.Robot;
 import org.usfirst.frc.team4169.robot.RobotMap;
 
@@ -30,6 +30,7 @@ public class DriveTrain extends Subsystem {
 	HashMap<String, WPI_TalonSRX> dict = new HashMap<>(); 
 	public static final double JOY_DEAD_ZONE = 0.2d;
 	public double angle = Math.PI / 2;
+	double radians;
 	static final double leftkF = 1.02,
 			leftkP = 1.2,
 			leftkI = 0.004,
@@ -38,14 +39,14 @@ public class DriveTrain extends Subsystem {
 			rightkP = 1.2,
 			rightkI = 0.004,
 			rightkD = 8.0;
-	static final double secondsForAcceleration = 0.5;
+	static final double secondsForAcceleration = 0.0;
 	static final int closedLoopErrorConstant = 20;
 	static final int velocityConstant = 5;
-	static final double inchesPerCompleteTurn = 28*Math.PI;
+	static final double inchesPerCompleteTurn = 28;
 	static final int kSlotIdx = 0;
 	static final int kPIDLoopIdx = 0;
 	static final int kTimeoutMs = 10;
-	public static final int pulses = (int)SmartDashboard.getNumber("Pulses per revolution", 1440);
+	static final int pulses = (int)SmartDashboard.getNumber("Pulses per revolution", 1440);
 	static int _loops = 0;
 	static int _timesInMotionMagic = 0;
 	
@@ -59,9 +60,11 @@ public class DriveTrain extends Subsystem {
 	
 	static DifferentialDrive drive = new DifferentialDrive(left, right);
 	
-	public double slowMode = 1;
+	double slowMode;
 	
 	public DriveTrain() {
+		slowMode = 1;
+		
 		dict.put("leftFront", leftFrontMotor);
 		dict.put("leftBack", leftBackMotor);
 		dict.put("rightFront", rightFrontMotor);
@@ -159,8 +162,8 @@ public class DriveTrain extends Subsystem {
     
     //drives the robot using controller values
     public void drive() {
-//    		double leftY = -OI.getInstance().controller1.getY(GenericHID.Hand.kLeft);
-//    		double rightY = -OI.getInstance().controller1.getY(GenericHID.Hand.kRight);
+//    		double leftY = -Robot.m_oi.getInstance().controller1.getY(GenericHID.Hand.kLeft);
+//    		double rightY = -Robot.m_oi.getInstance().controller1.getY(GenericHID.Hand.kRight);
 //    		
 //    		if (Math.abs(leftY) < 0.2) {
 //    			leftY = 0;
@@ -170,21 +173,18 @@ public class DriveTrain extends Subsystem {
 //    			rightY = 0;
 //    		}
 //    		
-//    		drive.tankDrive(leftY * 0.8 * slowMode, rightY * 0.93 * 0.8 * slowMode);
+//    		drive.tankDrive(leftY * 0.8 * slowMode, rightY * 0.8 * slowMode);
     	
     	
     	
     	
     	
-		double speed = joystickToMotorPower(OI.getInstance().controller1.getY(GenericHID.Hand.kLeft));
-		double rotation = OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kRight) -
-				OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kLeft);
+		double speed = joystickToMotorPower(Robot.m_oi.getController(1).getY(GenericHID.Hand.kLeft));
+		double rotation = Robot.m_oi.getController(1).getTriggerAxis(GenericHID.Hand.kRight) -
+				Robot.m_oi.getController(1).getTriggerAxis(GenericHID.Hand.kLeft);
 		
-		if (Math.abs(rotation) < 0.2) {
-			rotation = 0;
-		}
-		System.out.println("Speed = " + speed);
-		System.out.println("Rotation = " + rotation);
+		rotation = joystickToMotorPower(rotation);
+
 		drive.arcadeDrive(speed * slowMode, rotation * slowMode);
 		
 		
@@ -217,11 +217,16 @@ public class DriveTrain extends Subsystem {
     	final double slope = -1.0d/(JOY_DEAD_ZONE - 1.0d);
     	final double intercept = 1.0d + (1.0d/JOY_DEAD_ZONE - 1.0d);
     	
-    	double motorPower = 0.0d;
+    	double motorPower = 0.0;
+    	
     	joy = -joy;
     	
-    	if(Math.abs(joy) >= JOY_DEAD_ZONE) {
-    		motorPower = (slope * joy) + intercept;
+    	if (Math.abs(joy) < JOY_DEAD_ZONE) {
+    		motorPower = 0.0;
+    	} else if (joy > 0) {
+    		motorPower = slope * joy + intercept;
+    	} else if (joy < 0) {
+    		motorPower = slope * joy - intercept;
     	}
     	
     	return motorPower;
@@ -229,8 +234,8 @@ public class DriveTrain extends Subsystem {
     
     public void pidTest() {
     	/* get gamepad axis - forward stick is positive */
-		double leftYstick =	-OI.getInstance().controller1.getY(GenericHID.Hand.kLeft);
-		double rightYstick = -OI.getInstance().controller1.getY(GenericHID.Hand.kRight);
+		double leftYstick =	-Robot.m_oi.getController(1).getY(GenericHID.Hand.kLeft);
+		double rightYstick = -Robot.m_oi.getController(1).getY(GenericHID.Hand.kRight);
 		sb.append("\trightStick:");
 		sb.append(rightYstick);
 		sb.append("\tleftStick:");
@@ -248,7 +253,7 @@ public class DriveTrain extends Subsystem {
 		sb.append("\trightVel:");
 		sb.append(rightFrontMotor.getSelectedSensorVelocity(kPIDLoopIdx));
 
-		if (OI.getInstance().controller1.getBumper(GenericHID.Hand.kLeft)) {
+		if (Robot.m_oi.getController(1).getBumper(GenericHID.Hand.kLeft)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
 			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;
@@ -264,7 +269,7 @@ public class DriveTrain extends Subsystem {
 			sb.append(leftFrontMotor.getClosedLoopError(kPIDLoopIdx));
 			sb.append("\ttrg:");
 			sb.append(targetPos);
-		} else if (OI.getInstance().controller1.getBumper(GenericHID.Hand.kRight)) {
+		} else if (Robot.m_oi.getController(1).getBumper(GenericHID.Hand.kRight)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
 			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;
@@ -330,20 +335,14 @@ public class DriveTrain extends Subsystem {
     	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
     	leftFrontMotor.set(ControlMode.MotionMagic, distance);
     	leftBackMotor.follow(leftFrontMotor);
-    	rightFrontMotor.follow(leftFrontMotor);
+    	rightFrontMotor.set(ControlMode.MotionMagic, distance);
     	rightBackMotor.follow(rightFrontMotor);
-    	
-//    	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
-//    	leftFrontMotor.set(ControlMode.MotionMagic, distance);
-//    	leftBackMotor.follow(leftFrontMotor);
-//    	rightFrontMotor.follow(leftFrontMotor);
-//    	rightBackMotor.follow(leftFrontMotor);
     }
 
-    public void turnForDegrees(double degrees){
+    public void turnForRadians(double radians) {
     	rightFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
     	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
-    	double distance = (pulses/(6*Math.PI)) * inchesPerCompleteTurn * (degrees/360);
+    	double distance = inchesPerCompleteTurn * pulses * radians / 2 / Math.PI;
     	rightFrontMotor.set(ControlMode.MotionMagic, distance);
     	rightBackMotor.follow(rightFrontMotor);
     	leftFrontMotor.set(ControlMode.MotionMagic, -distance);
@@ -379,6 +378,16 @@ public class DriveTrain extends Subsystem {
     	sb.append("\trightCount");
     	sb.append(rightFrontMotor.getSelectedSensorPosition(kSlotIdx));
     	System.out.println(sb.toString());
+    }
+    
+    public void setSlowMode(double value) {
+    	if (value <= 1.0 && value >= 0.0) {
+    		slowMode = value;
+    	}
+    }
+    
+    public double getPulsesPerInch() {
+    	return pulses;
     }
 } 
 

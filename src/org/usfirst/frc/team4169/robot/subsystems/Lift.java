@@ -2,7 +2,7 @@ package org.usfirst.frc.team4169.robot.subsystems;
 
 import java.util.concurrent.TimeUnit;
 
-import org.usfirst.frc.team4169.robot.OI;
+import org.usfirst.frc.team4169.robot.Robot;
 import org.usfirst.frc.team4169.robot.RobotMap;
 import org.usfirst.frc.team4169.robot.commands.MoveLift;
 
@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift extends Subsystem {
+	static final double testInches = 40.0;
 	static final double liftSpeed = SmartDashboard.getNumber("Lift Speed", 0.5);
 	static final int kPIDLoopIdx = 0;
 	static final int closedLoopErrorConstant = 15;
@@ -29,7 +30,7 @@ public class Lift extends Subsystem {
 			liftkI = 0,
 		    liftkD = 0;
 	static final int kSlotIdx = 0;
-	public double slowMode = 1;
+	double slowMode;
 	StringBuilder sb = new StringBuilder();
 	static int _timesInMotionMagic = 0;
 	static int _loops = 0;
@@ -37,6 +38,8 @@ public class Lift extends Subsystem {
 	static WPI_TalonSRX liftMotor = new WPI_TalonSRX(RobotMap.liftMotor);
 	
 	public Lift() {
+		slowMode = 1.0;
+		
 		double kF = SmartDashboard.getNumber("liftkF", 0);
 		double kP = SmartDashboard.getNumber("liftkP", 0);
 		double kI = SmartDashboard.getNumber("liftkI", 0);
@@ -82,7 +85,7 @@ public class Lift extends Subsystem {
     }
     
     public void moveLift(double speed) {
-        liftMotor.set(speed);
+        liftMotor.set(speed * slowMode);
     }
     
     public double getLiftPosition() {
@@ -95,15 +98,9 @@ public class Lift extends Subsystem {
     
     public void pidTest() {
     	/* get gamepad axis - forward stick is positive */
-    	double targetPos = pulsesPerInch * 40.0;
+    	double targetPos = pulsesPerInch * testInches;
     	
-		double left = OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kLeft);
-		double right = OI.getInstance().controller1.getTriggerAxis(GenericHID.Hand.kRight);
-		double spd = right - left;
-		sb.append("\tright:");
-		sb.append(right);
-		sb.append("\tleft:");
-		sb.append(left);
+		double spd = Robot.m_oi.getController(2).getY(GenericHID.Hand.kLeft);
 		sb.append("\tsetOut:");
 		sb.append(spd);
 		/* calculate the percent motor output */
@@ -114,7 +111,7 @@ public class Lift extends Subsystem {
 		sb.append("\tVel:");
 		sb.append(liftMotor.getSelectedSensorVelocity(kPIDLoopIdx));
 
-		if (OI.getInstance().controller1.getBumper(GenericHID.Hand.kRight)) {
+		if (Robot.m_oi.getController(2).getBumper(GenericHID.Hand.kRight)) {
 			
 			if (!(liftMotor.getControlMode() == ControlMode.MotionMagic)) {
 				liftMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
@@ -166,6 +163,12 @@ public class Lift extends Subsystem {
 		}
 		/* clear line cache */
 		sb.setLength(0);
+    }
+    
+    public void setSlowMode(double value) {
+    	if (value <= 1.0 && value >= 0.0) {
+    		slowMode = value;
+    	}
     }
 }
 

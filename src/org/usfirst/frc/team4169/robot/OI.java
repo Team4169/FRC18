@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	private static OI instance = null;
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.
@@ -34,8 +33,8 @@ public class OI {
 	//FIRST CONTROLLER PLUGGED INTO LAPTOP WILL AUTOMATICALLY BE CONTROLLER 0. THE PORT
 	//THE CONTROLLER IS PLUGGED INTO DOES NOT MATTER.
 	
-	public XboxController controller1 = new XboxController(0);
-	public XboxController controller2 = new XboxController(1);
+	XboxController controller1 = new XboxController(0);
+	XboxController controller2 = new XboxController(1);
 	
 	//private JoystickButton AButton1 = new JoystickButton(controller1, 1);
 	private JoystickButton BButton1 = new JoystickButton(controller1, 2);
@@ -49,15 +48,16 @@ public class OI {
 		XButton2.whenPressed(new SlowMode2());
 	}
 	
-	public static OI getInstance() {
-		if (instance == null) {
-			instance = new OI();
+	public XboxController getController(int value) {
+		switch(value) {
+			case 1:
+				return controller1;
+			case 2:
+				return controller2;
+			default:
+				return controller1;
 		}
-		
-		return instance;
 	}
-	
-	
 	
 	
 	// There are a few additional built in buttons you can use. Additionally,

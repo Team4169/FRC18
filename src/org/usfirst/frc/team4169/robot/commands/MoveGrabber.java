@@ -1,5 +1,4 @@
-package org.usfirst.frc.team4169.robot.subsystems;
-import org.usfirst.frc.team4169.robot.OI;
+package org.usfirst.frc.team4169.robot.commands;
 import org.usfirst.frc.team4169.robot.Robot;
 
 
@@ -10,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class MoveGrabber extends Command {
+	static final double dead_zone = 0.15;
 	
     public MoveGrabber() {
         requires(Robot.kGrabber);
@@ -21,15 +21,17 @@ public class MoveGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double left = OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kLeft);
-    	double right = OI.getInstance().controller2.getTriggerAxis(GenericHID.Hand.kRight);
-    	if (left >= 0.15) {
-    		Robot.kGrabber.moveGrabber(-left);
-    	} else if (right >= 0.15) {
-    		Robot.kGrabber.moveGrabber(right); 
-    	} else {
-    		Robot.kGrabber.moveGrabber(0);
+    	double left = Robot.m_oi.getController(2).getTriggerAxis(GenericHID.Hand.kLeft);
+    	double right = Robot.m_oi.getController(2).getTriggerAxis(GenericHID.Hand.kRight);
+    	
+    	if (left <= dead_zone) {
+    		left = 0;
     	}
+    	if (right <= dead_zone) {
+    		right = 0;
+    	}
+    	double speed = right - left;
+    	Robot.kGrabber.moveGrabber(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

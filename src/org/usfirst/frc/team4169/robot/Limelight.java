@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4169.robot;
 
-import org.usfirst.frc.team4169.robot.commands.TurnForDegrees;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -15,6 +13,7 @@ public class Limelight {
 	static final double mountingAngle = 0;
 	static final double mountingHeight = 3;
 	static final double targetHeight = 5.5;
+	static final double turnAmount = Math.PI/36;
 	/**
 	 * Light modes for Limelight.
 	 * 
@@ -85,12 +84,6 @@ public class Limelight {
 	 */
 	public double getTl() {
 		return getValue("tl").getDouble(0.00);
-	}
-	
-	public void findCube() {
-		while(!isTarget()){
-			new TurnForDegrees(5);
-		}
 	}
 	
 	public double getDist() {
