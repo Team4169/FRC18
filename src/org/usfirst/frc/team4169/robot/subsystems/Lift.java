@@ -170,5 +170,9 @@ public class Lift extends Subsystem {
     		slowMode = value;
     	}
     }
+    
+    public WPI_TalonSRX getMotor() {
+    	return liftMotor;
+    }
 }
 

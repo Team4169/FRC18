@@ -46,7 +46,7 @@ public class MoveLift extends Command {
     
     private double joystickToMotorPower(double joy) {
     	final double slope = -1.0d / (dead_zone - 1.0d);
-    	final double intercept = 1.0d + (1.0d/dead_zone - 1.0d);
+    	final double intercept = 1.0d + (1.0d/(dead_zone - 1.0d));
     	
     	double motorPower = 0.0d;
     	

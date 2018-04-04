@@ -1,43 +1,46 @@
 package org.usfirst.frc.team4169.robot.commands;
-
 import org.usfirst.frc.team4169.robot.Robot;
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class SlowMode extends Command {
-	static final double value = 0.7;
+public class MoveLiftForTime extends Command {
 
-    public SlowMode() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+	double timeToRun;
+	double initTime;
+	double speed;
+	
+    public MoveLiftForTime(double spd, double seconds) {
+    	speed = spd;
+    	timeToRun = seconds;
+        requires(Robot.kLift);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.kDriveTrain.setSlowMode(value);
-
+    	initTime = Timer.getFPGATimestamp();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	Robot.kLift.moveLift(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.m_oi.getController(1).getYButton();
+    	return Timer.getFPGATimestamp() - initTime > timeToRun;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.kDriveTrain.setSlowMode(1.0);
+    	Robot.kLift.moveLiftToPosition(Robot.kLift.getLiftPosition());
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

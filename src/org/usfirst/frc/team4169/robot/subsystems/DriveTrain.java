@@ -60,10 +60,11 @@ public class DriveTrain extends Subsystem {
 	
 	static DifferentialDrive drive = new DifferentialDrive(left, right);
 	
-	double slowMode;
+	double slowMode, joySlowMode;
 	
 	public DriveTrain() {
-		slowMode = 1;
+		slowMode = 1.0;
+		joySlowMode = 1.0;
 		
 		dict.put("leftFront", leftFrontMotor);
 		dict.put("leftBack", leftBackMotor);
@@ -78,10 +79,10 @@ public class DriveTrain extends Subsystem {
 		leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
 		leftFrontMotor.setSensorPhase(true);
 		
-		leftFrontMotor.setNeutralMode(NeutralMode.Brake);
-		leftBackMotor.setNeutralMode(NeutralMode.Brake);
-		rightFrontMotor.setNeutralMode(NeutralMode.Brake);
-		rightBackMotor.setNeutralMode(NeutralMode.Brake);
+		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
+		leftBackMotor.setNeutralMode(NeutralMode.Coast);
+		rightFrontMotor.setNeutralMode(NeutralMode.Coast);
+		rightBackMotor.setNeutralMode(NeutralMode.Coast);
 		
 		rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, kPIDLoopIdx, kTimeoutMs);
 		rightFrontMotor.setSensorPhase(true);
@@ -179,13 +180,18 @@ public class DriveTrain extends Subsystem {
     	
     	
     	
-		double speed = joystickToMotorPower(Robot.m_oi.getController(1).getY(GenericHID.Hand.kLeft));
+		double speed = -Robot.m_oi.getController(1).getY(GenericHID.Hand.kLeft);
 		double rotation = Robot.m_oi.getController(1).getTriggerAxis(GenericHID.Hand.kRight) -
 				Robot.m_oi.getController(1).getTriggerAxis(GenericHID.Hand.kLeft);
 		
+		System.out.print("Joy: " + speed);
+		
 		rotation = joystickToMotorPower(rotation);
+		speed = joystickToMotorPower(speed);
+		
+		System.out.print("Out: " + speed);
 
-		drive.arcadeDrive(speed * slowMode, rotation * slowMode);
+		drive.arcadeDrive(speed * 0.70 * slowMode, rotation * (slowMode + 0.1) * 0.7);
 		
 		
     	
@@ -215,11 +221,9 @@ public class DriveTrain extends Subsystem {
     
     private double joystickToMotorPower(double joy) {
     	final double slope = -1.0d/(JOY_DEAD_ZONE - 1.0d);
-    	final double intercept = 1.0d + (1.0d/JOY_DEAD_ZONE - 1.0d);
+    	final double intercept = 1.0d + (1.0d/(JOY_DEAD_ZONE - 1.0d));
     	
     	double motorPower = 0.0;
-    	
-    	joy = -joy;
     	
     	if (Math.abs(joy) < JOY_DEAD_ZONE) {
     		motorPower = 0.0;
@@ -229,6 +233,7 @@ public class DriveTrain extends Subsystem {
     		motorPower = slope * joy - intercept;
     	}
     	
+    
     	return motorPower;
     }
     
@@ -236,6 +241,15 @@ public class DriveTrain extends Subsystem {
     	/* get gamepad axis - forward stick is positive */
 		double leftYstick =	-Robot.m_oi.getController(1).getY(GenericHID.Hand.kLeft);
 		double rightYstick = -Robot.m_oi.getController(1).getY(GenericHID.Hand.kRight);
+		
+		if (Math.abs(leftYstick) < 0.2) {
+			leftYstick = 0;
+		}
+		
+		if (Math.abs(rightYstick) < 0.2) {
+			rightYstick = 0;
+		}
+		
 		sb.append("\trightStick:");
 		sb.append(rightYstick);
 		sb.append("\tleftStick:");
@@ -258,9 +272,9 @@ public class DriveTrain extends Subsystem {
 			// Motion Magic for 10 ft
 			double targetPos = pulses * 10.0 * 12.0 / 6 / Math.PI;
 			
-			if (!(leftFrontMotor.getControlMode() == ControlMode.MotionMagic)) {
+			if (!(leftFrontMotor.getControlMode() == ControlMode.Velocity)) {
 				leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
-				leftFrontMotor.set(ControlMode.MotionMagic, targetPos);
+				leftFrontMotor.set(ControlMode.Velocity, 800);
 				leftBackMotor.follow(leftFrontMotor);
 			}
 			
@@ -269,6 +283,7 @@ public class DriveTrain extends Subsystem {
 			sb.append(leftFrontMotor.getClosedLoopError(kPIDLoopIdx));
 			sb.append("\ttrg:");
 			sb.append(targetPos);
+			process(leftFrontMotor, sb);
 		} else if (Robot.m_oi.getController(1).getBumper(GenericHID.Hand.kRight)) {
 			/* Motion Magic - 4096 ticks/rev * 10 Rotations in either direction */
 			// Motion Magic for 10 ft
@@ -285,16 +300,19 @@ public class DriveTrain extends Subsystem {
 			sb.append(rightFrontMotor.getClosedLoopError(kPIDLoopIdx));
 			sb.append("\ttrg:");
 			sb.append(targetPos);
+			process(rightFrontMotor, sb);
     	} else {
 			/* Percent voltage mode */
 			leftFrontMotor.set(ControlMode.PercentOutput, leftYstick);
 			leftBackMotor.follow(leftFrontMotor);
 			rightFrontMotor.set(ControlMode.PercentOutput, rightYstick);
 			rightBackMotor.follow(rightFrontMotor);
+			
+			process(leftFrontMotor, sb);
 		}
 		
 		/* instrumentation */
-		process(rightFrontMotor, sb);
+		
 		try {
 			TimeUnit.MILLISECONDS.sleep(10);
 		} catch (Exception e) {
@@ -333,10 +351,12 @@ public class DriveTrain extends Subsystem {
     public void driveForDistance(double distance) {
     	rightFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
     	leftFrontMotor.setSelectedSensorPosition(kSlotIdx, kPIDLoopIdx, kTimeoutMs);
-    	leftFrontMotor.set(ControlMode.MotionMagic, distance);
-    	leftBackMotor.follow(leftFrontMotor);
+    	//leftFrontMotor.set(ControlMode.MotionMagic, distance);
+    	//leftBackMotor.follow(leftFrontMotor);
     	rightFrontMotor.set(ControlMode.MotionMagic, distance);
     	rightBackMotor.follow(rightFrontMotor);
+    	leftFrontMotor.follow(rightFrontMotor);
+    	leftBackMotor.follow(rightFrontMotor);
     }
 
     public void turnForRadians(double radians) {
@@ -363,7 +383,7 @@ public class DriveTrain extends Subsystem {
     }
     
     public void speedTest() {
-    	drive.tankDrive(1, 1*.93);
+    	drive.arcadeDrive(0.5, 0);
     	StringBuilder sb = new StringBuilder();
     	sb.append("\tleftOut:");
     	sb.append(leftFrontMotor.getMotorOutputPercent());
@@ -384,10 +404,21 @@ public class DriveTrain extends Subsystem {
     	if (value <= 1.0 && value >= 0.0) {
     		slowMode = value;
     	}
+    	
+    	joySlowMode = value + 0.1;
+    	
+    	if (joySlowMode > 1.0) {
+    		joySlowMode = 1.0;
+    	}
     }
     
     public double getPulsesPerInch() {
     	return pulses;
+    }
+    
+    public void resetEncoders() {
+    	leftFrontMotor.setSelectedSensorPosition(0, 0, 0);
+    	rightFrontMotor.setSelectedSensorPosition(0, 0, 0);
     }
 } 
 

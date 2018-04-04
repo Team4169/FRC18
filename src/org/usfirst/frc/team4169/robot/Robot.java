@@ -15,9 +15,12 @@ import org.usfirst.frc.team4169.robot.commands.AutoCommand;
 import org.usfirst.frc.team4169.robot.commands.DriveToDistance;
 import org.usfirst.frc.team4169.robot.commands.DriveToListOfPoints;
 import org.usfirst.frc.team4169.robot.commands.DriveWithController;
+import org.usfirst.frc.team4169.robot.commands.MoveLift;
 import org.usfirst.frc.team4169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4169.robot.subsystems.Grabber;
 import org.usfirst.frc.team4169.robot.subsystems.Lift;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -44,6 +47,7 @@ public class Robot extends TimedRobot {
 	//public static final Limelight limelight = new Limelight();
 	
 	Command m_autonomousCommand;
+	Command moveLift = new MoveLift();
 	
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 	
@@ -249,6 +253,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		System.out.println("Lift position (pulses): " + kLift.getMotor().getSelectedSensorPosition(0));
+	
+		
 		Scheduler.getInstance().run();
 	}
 

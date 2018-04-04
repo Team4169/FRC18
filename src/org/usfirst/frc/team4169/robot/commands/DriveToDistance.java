@@ -3,6 +3,7 @@ package org.usfirst.frc.team4169.robot.commands;
 import org.usfirst.frc.team4169.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -19,28 +20,33 @@ public class DriveToDistance extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.kDriveTrain.driveForDistance(pulses);
+    	Robot.kDriveTrain.resetEncoders();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	StringBuilder sb = new StringBuilder();
-    	boolean left = Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("leftFront"));
+    	//boolean left = Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("leftFront"));
     	boolean right = Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("rightFront"));
-    	if (left) {
-    		sb.append("left done.");
-    	}
-    	
+//    	if (left) {
+//    		sb.append("left done.");
+//    	}
+//    	
     	if (right) {
     		sb.append("right done.");
     	}
     	
-    	System.out.print(sb);
+    	SmartDashboard.putNumber("leftVel", Robot.kDriveTrain.getMotor("leftFront").getSelectedSensorVelocity(0));
+    	SmartDashboard.putNumber("rightVel", Robot.kDriveTrain.getMotor("rightFront").getSelectedSensorVelocity(0));
+    	SmartDashboard.putNumber("leftPos", Robot.kDriveTrain.getMotor("leftFront").getSelectedSensorPosition(0));
+    	SmartDashboard.putNumber("rightPos", Robot.kDriveTrain.getMotor("rightFront").getSelectedSensorPosition(0));
+    	if (sb.length() > 0) System.out.println(sb);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("leftFront")) &&
-        	Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("rightFront"));
+        return Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("rightFront"));// &&
+//        	Robot.kDriveTrain.checkClosedLoopError(Robot.kDriveTrain.getMotor("rightFront"));
     }
 
     // Called once after isFinished returns true

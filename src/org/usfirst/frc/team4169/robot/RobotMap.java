@@ -29,8 +29,8 @@ public class RobotMap {
 	public static final int rightFrontMotor = 1;
 	public static final int rightBackMotor = 2;
 	
-	public static final int leftGrabberMotor = 0;
-	public static final int rightGrabberMotor = 1;
+	public static final int leftGrabberMotor = 1;
+	public static final int rightGrabberMotor = 0;
 	
 	public static final int liftMotor = 3;
 	
